@@ -1,0 +1,14 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+
+
+CREATE PROCEDURE [dbo].[IsUserASA]
+AS
+
+select IS_SRVROLEMEMBER ('securityadmin')
+
+GO
+GRANT EXECUTE ON  [dbo].[IsUserASA] TO [public]
+GO

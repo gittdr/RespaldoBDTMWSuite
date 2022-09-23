@@ -1,0 +1,7 @@
+CREATE TABLE [dbo].[NavmanOutboundMsgLastSN]
+(
+[SN] [int] NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[NavmanOutboundMsgLastSN] ADD CONSTRAINT [PK__NavmanOu__32151C643DB501F5] PRIMARY KEY CLUSTERED ([SN]) ON [PRIMARY]
+GO

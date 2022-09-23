@@ -1,0 +1,13 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+
+CREATE PROCEDURE [dbo].[tm_tank] @cmp_id varchar(25) --PTS 61189 CMP_ID INCREASE LENGTH TO 25
+AS
+
+EXEC tm_tank2 @cmp_id,0,NULL
+
+GO
+GRANT EXECUTE ON  [dbo].[tm_tank] TO [public]
+GO

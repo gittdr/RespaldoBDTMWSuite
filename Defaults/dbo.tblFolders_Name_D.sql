@@ -1,0 +1,4 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE DEFAULT [dbo].[tblFolders_Name_D] AS ''
+GO

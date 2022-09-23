@@ -1,0 +1,4 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE DEFAULT [dbo].[tblTransactions_InCopyToDisp] AS 1
+GO

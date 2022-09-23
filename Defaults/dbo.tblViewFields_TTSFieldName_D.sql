@@ -1,0 +1,4 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE DEFAULT [dbo].[tblViewFields_TTSFieldName_D] AS ''
+GO

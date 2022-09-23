@@ -1,0 +1,22 @@
+CREATE TABLE [dbo].[SAFETY_HELP]
+(
+[shlp_ID] [int] NOT NULL IDENTITY(1, 1),
+[shlp_section] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[shlp_item] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[shlp_instructions] [varchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [INX_SAFETY_HELP] ON [dbo].[SAFETY_HELP] ([shlp_ID]) ON [PRIMARY]
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [INX_SECTION_ITEM] ON [dbo].[SAFETY_HELP] ([shlp_section], [shlp_item]) ON [PRIMARY]
+GO
+GRANT DELETE ON  [dbo].[SAFETY_HELP] TO [public]
+GO
+GRANT INSERT ON  [dbo].[SAFETY_HELP] TO [public]
+GO
+GRANT REFERENCES ON  [dbo].[SAFETY_HELP] TO [public]
+GO
+GRANT SELECT ON  [dbo].[SAFETY_HELP] TO [public]
+GO
+GRANT UPDATE ON  [dbo].[SAFETY_HELP] TO [public]
+GO

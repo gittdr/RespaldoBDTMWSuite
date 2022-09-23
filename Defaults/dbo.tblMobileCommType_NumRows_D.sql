@@ -1,0 +1,4 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE DEFAULT [dbo].[tblMobileCommType_NumRows_D] AS 40
+GO

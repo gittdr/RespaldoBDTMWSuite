@@ -1,0 +1,31 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+
+CREATE PROCEDURE [dbo].[FUELTICKET_CHECK_RECYCLE] 
+AS
+BEGIN
+	DECLARE @intCount INT
+    SET NOCOUNT ON
+    
+    SELECT @intCount = COUNT(FTK_TICKET_NUMBER) 
+    FROM   FUELTICKET 
+    WHERE  MOV_NUMBER IS NULL 
+      AND  FTK_RECYCLED = 'N'
+    
+    IF @intCount > 0 
+    BEGIN
+        UPDATE FUELTICKET
+        SET 
+            LGH_NUMBER   = NULL,
+            FTK_RECYCLED = 'Y'
+        WHERE FTK_TICKET_NUMBER IN (
+            SELECT FT.FTK_TICKET_NUMBER
+            FROM   FUELTICKET FT
+            WHERE  FT.MOV_NUMBER IS NULL 
+              AND  FT.FTK_RECYCLED = 'N'
+        )
+    END
+END
+GO

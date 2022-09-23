@@ -1,0 +1,48 @@
+ALTER ROLE [db_ddladmin] ADD MEMBER [AAFV]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [ACCJ]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [AMME]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [CARR1]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [ESMR1]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [GOBJ]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [LUAL]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [LUVA]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [MACK]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [MATAN]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [MIUR]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [MOMJ]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [MOPE]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [MOPM2]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [NAOO]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [ORLJ]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [RAOC]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [REMM]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [ROAVM]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [ROMG]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [SEAG]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [SOSE]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [TDR\Administrator]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [VIMA2]
+GO

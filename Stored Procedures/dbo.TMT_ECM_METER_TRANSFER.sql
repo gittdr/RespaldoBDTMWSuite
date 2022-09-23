@@ -1,0 +1,361 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+----------------------------------
+--- TMT AMS from TMWSYSTEMS
+--- VERSION 12.30.00 SQL SCRIPT
+--- TMWSuite1230_Script1.sql
+--- CHANGED 04/04/2011 MH
+--- CHANGED 12/14/2009 MRH
+--- CHANGED 03/06/2009 MRH
+--- CHANGED 02/22/2009 JP
+--- CHANGED 02/17/2009 JP
+--- CHANGED 09/30/2008 JP
+--- CHANGED 09/19/2008 MB
+--- changed 04/24/2007 MB
+--- changed 01/11/2007 MB
+--- Changed 11/17/2006 MH
+--- CREATED 08/05/2005 MH
+----------------------------------
+CREATE  PROC [dbo].[TMT_ECM_METER_TRANSFER]
+AS
+
+/**
+*
+* NAME:
+* dbo.TMT_EMC_METER_TRANSFER
+*
+* TYPE:
+* StoredProcedure
+*
+* DESCRIPTION:
+* Transfer hub miles from TMWS to Transman
+*
+* RETURNS:
+* None
+* RESULT SETS:
+* none.
+*
+* PARAMETERS:
+*
+* REVISION HISTORY:
+* 08/05/2005.01 - MRH – Created
+* 01/20/2006 - MRH do not send inital reading.
+*              Use the most recient mileage not the max mileage.
+* 02/13/2006 - MRH Back out mileages if the new mileage is lower.
+* 07/18/2012 - MRH changed to use TMTEXT_METERMAID_WITHVALIDATE
+*
+**/
+
+--
+-- REQUIRES PTS28629
+-- PROVIDES TMT_EMC_METER_TRANSFER
+--
+
+-- Loop through all active tractors find the greatest hub mileages.
+--      Compair the mileage to the TMTEMCTransferHistory table
+--      if the mileage is greater, send it to Transman.
+SET ANSI_NULLS ON
+set ANSI_WARNINGS ON
+
+Declare @trc_number varchar(8)
+Declare @evt_hubmiles int
+Declare @lgh_miles int
+--Declare @new_miles int
+Declare @tmtserver varchar(25)
+Declare @tmtdb varchar(25)
+
+Declare @metertype varchar(12)
+Declare @meterdate datetime
+Declare @shoplink int
+Declare @count int
+DECLARE @SQL            [NVARCHAR](4000)
+DECLARE @DESCRIP        [VARCHAR](60)
+DECLARE @PHYSICAL       [CHAR](1)
+DECLARE @METERUOM       [VARCHAR](12)
+DECLARE @ERRORS         [INTEGER]
+DECLARE @MINTEMPID	[INTEGER]
+DECLARE @MAXTEMPID 	[INTEGER]
+DECLARE @TMTUNITTYPE	[VARCHAR] (12)
+
+DECLARE @GETTRACTORS TABLE ( TEMPID         [INTEGER] IDENTITY(1,1) NOT NULL,
+TRC_NUMBER     [VARCHAR](24),
+EVT_HUBMILES   [INTEGER] NULL)
+
+SET @DESCRIP  = 'TMW Suite ECM Meter'
+SET @PHYSICAL = CHAR(89) -- 'Y'
+SET @METERUOM = 'MILE' -- OR 'KM'
+SET @METERTYPE = 'ECMMETER'
+SET @METERDATE = CONVERT(varchar(10), GetDate(), 101)
+
+
+SELECT @shoplink = COUNT(1)
+FROM GENERALINFO (NOLOCK)
+WHERE GI_NAME = 'Shoplink' and
+GI_INTEGER1 > 0
+
+-- 02/22/2009: JDP changed to use a declared temp table instead of cycling through all units in event table
+
+IF @shoplink = 0 RETURN -- SHOPLINK NOT installed, exit
+
+INSERT INTO @GETTRACTORS (TRC_NUMBER,
+EVT_HUBMILES)
+
+SELECT DISTINCT(E.EVT_TRACTOR) AS [TRC_NUMBER],
+NULL AS [EVT_HUBMILES]
+FROM EVENT E (NOLOCK)
+LEFT OUTER JOIN TRACTORPROFILE TP (NOLOCK) ON
+(TP.[TRC_NUMBER] = E.[EVT_TRACTOR])
+WHERE TP.[TRC_STATUS] NOT IN ('VAC', 'OUT')
+
+
+SELECT @MINTEMPID = ISNULL(MIN([TEMPID]),1)
+FROM @GETTRACTORS
+
+SELECT @MAXTEMPID = ISNULL(MAX([TEMPID]),1)
+FROM @GETTRACTORS
+
+WHILE @MINTEMPID < (@MAXTEMPID + 1)
+BEGIN
+
+SELECT @evt_hubmiles = 0
+
+SELECT @trc_number = [TRC_NUMBER]
+FROM @GETTRACTORS
+WHERE [TEMPID] = @MINTEMPID
+
+SELECT @TMTUNITTYPE = isnull(trc_ams_type, 'TRACTOR') FROM TRACTORPROFILE WHERE TRC_NUMBER = @trc_number
+
+--SELECT @evt_hubmiles = MAX([EVT_HUBMILES])
+--FROM [EVENT]
+--WHERE [EVT_HUBMILES] IS NOT NULL AND
+--      [EVT_TRACTOR] = @TRC_NUMBER
+
+-- MRH 10/14/09 Get the latest mileage, not necessarly the greatest.
+-- This will allow for EMC unit replacement on a tractor.
+SELECT @evt_hubmiles = MAX([EVT_HUBMILES])
+FROM [EVENT] WHERE evt_number = (select max(evt_number) from EVENT where [EVT_HUBMILES] IS NOT NULL AND [EVT_TRACTOR] = @TRC_NUMBER and evt_status = 'DNE'
+and evt_enddate = (select max(evt_enddate) from event where [EVT_HUBMILES] IS NOT NULL AND [EVT_TRACTOR] = @TRC_NUMBER and evt_status = 'DNE'))
+
+
+IF @evt_hubmiles > 0 and @trc_number <> 'UNKNOWN' -- If no mileage skip it.
+BEGIN
+SELECT @lgh_miles = ISNULL(MAX(LGH_MILES), 0)
+FROM TMTECMTRANSFERHISTORY (NOLOCK)
+WHERE TRACTOR = @trc_number
+
+IF @evt_hubmiles <> @lgh_miles
+BEGIN
+--MRH 11/17/06 Meter changed to a phyiscal meter. Send total mileage.
+--SELECT @new_miles = @evt_hubmiles
+
+IF (SELECT GI_STRING1
+FROM GENERALINFO (NOLOCK)
+WHERE GI_NAME = 'Shoplink') <> @@servername
+BEGIN
+SELECT @TMTSERVER = '[' + GI_STRING1 + ']'
+FROM GENERALINFO (NOLOCK)
+WHERE GI_NAME = 'Shoplink'
+
+SELECT @tmtdb = '[' + GI_STRING2 + ']'
+FROM GENERALINFO (NOLOCK)
+WHERE GI_NAME = 'Shoplink'
+
+SET @SQL = 'IF NOT EXISTS(SELECT METERDEFID FROM ' +
+@tmtserver + '.' + @tmtdb +
+'.[dbo].METERDEF WHERE METERTYPE = @LOCALMETERTYPE1) EXEC ' +
+@tmtserver + '.' + @tmtdb +
+'.[dbo].[SP_METERDEF_INSERT] @LOCALMETERTYPE,
+@LOCALDESCRIP,
+@LOCALPHYSICAL,
+@LOCALMETERUOM,
+@LOCALERRORS OUTPUT '
+
+EXEC SP_EXECUTESQL @SQL, N'@LOCALMETERTYPE1 VARCHAR(12),
+@LOCALMETERTYPE VARCHAR(12),
+@LOCALDESCRIP VARCHAR(60),
+@LOCALPHYSICAL CHAR(1),
+@LOCALMETERUOM VARCHAR(12),
+@LOCALERRORS INTEGER',
+@METERTYPE,
+@METERTYPE,
+@DESCRIP,
+@PHYSICAL,
+@METERUOM,
+@ERRORS
+
+SET @SQL = 'DECLARE @INTEGRATIONID int
+SELECT  @INTEGRATIONID = [INTEGRATIONID]   FROM ' +
+@tmtserver + '.' + @tmtdb +
+'.[dbo].[INTEGRATION]  WHERE [INTNAME] =''TMWSUITE''  EXEC ' +
+@tmtserver + '.' + @tmtdb +
+'.[dbo].[TMTEXT_METERMAID_WITHVALIDATE] @UNITID,
+@ORDERTYPE,
+@ORDERID,
+@METERTYPE,
+@METERREADING,
+@METERDATE,
+@VALIDATE,
+@ERRORS OUTPUT,
+@CUSTOMERNAME,
+@INTEGRATIONID,
+@UNITTYPE'
+
+EXEC SP_EXECUTESQL @SQL, N' @UNITID VARCHAR(24),
+@ORDERTYPE VARCHAR(12),
+@ORDERID INTEGER,
+@METERTYPE VARCHAR(12),
+@METERREADING NUMERIC(15,6),
+@METERDATE DATETIME,
+@VALIDATE CHAR(1),
+@ERRORS INTEGER,
+@CUSTOMERNAME  VARCHAR(12),
+@UNITTYPE VARCHAR(12)',
+@trc_number,
+NULL,
+NULL,
+@METERTYPE,
+@evt_hubmiles,
+@METERDATE,
+NULL,
+@ERRORS,
+NULL,
+@TMTUNITTYPE
+
+--  SET @SQL = 'DECLARE @INTEGRATIONID int
+--		   SELECT  @INTEGRATIONID = [INTEGRATIONID]   FROM ' +
+--		   @tmtserver + '.' + @tmtdb +
+--		   '.[dbo].[INTEGRATION]  WHERE [INTNAME] =''TMWSUITE''  EXEC ' +
+--		   @tmtserver + '.' + @tmtdb +
+--		   '.[dbo].[TMTEXT_METERMAID_WITHVALIDATE] @UNITID,
+--									  @ORDERTYPE,
+--									  @ORDERID,
+--									  @METERTYPE,
+--									  @METERREADING,
+--									  @METERDATE,
+--									  @ERRORS OUTPUT,
+--									  @CUSTOMERNAME,
+--									  @INTEGRATIONID,
+--									  @TMTUNITTYPE'
+
+--EXEC SP_EXECUTESQL @SQL, N' @UNITID VARCHAR(24),
+--							@ORDERTYPE VARCHAR(12),
+--							@ORDERID INTEGER,
+--							@METERTYPE VARCHAR(12),
+--							@METERREADING NUMERIC(15,6),
+--							@METERDATE DATETIME,
+--							@ERRORS INTEGER,
+--							@CUSTOMERNAME  VARCHAR(12),
+--							@TMTUNITTYPE VARCHAR(12)',
+--							@trc_number,
+--							NULL,
+--							NULL,
+--							@METERTYPE,
+--							@new_miles,
+--							@METERDATE,
+--							@ERRORS,
+--							NULL,
+--							@TMTUNITTYPE
+
+END --(select gi_string1 from generalinfo (NOLOCK) where gi_name = 'Shoplink') <> @@servername
+ELSE
+BEGIN
+SELECT @tmtdb = '[' + GI_STRING2 + ']'
+FROM GENERALINFO (NOLOCK)
+WHERE GI_NAME = 'Shoplink'
+
+SET @SQL = 'IF NOT EXISTS(SELECT METERDEFID FROM ' + @tmtdb +
+'.[dbo].METERDEF WHERE METERTYPE = @LOCALMETERTYPE1) EXEC '+ @tmtdb +
+'.[dbo].[SP_METERDEF_INSERT] @LOCALMETERTYPE,
+@LOCALDESCRIP,
+@LOCALPHYSICAL,
+@LOCALMETERUOM,
+@LOCALERRORS OUTPUT '
+
+EXEC SP_EXECUTESQL @SQL, N'@LOCALMETERTYPE1 VARCHAR(12),
+@LOCALMETERTYPE VARCHAR(12),
+@LOCALDESCRIP VARCHAR(60),
+@LOCALPHYSICAL CHAR(1),
+@LOCALMETERUOM VARCHAR(12),
+@LOCALERRORS INTEGER',
+@METERTYPE,
+@METERTYPE,
+@DESCRIP,
+@PHYSICAL,
+@METERUOM,
+@ERRORS
+
+SET @SQL = 'DECLARE @INTEGRATIONID int  SELECT @INTEGRATIONID = ' +  @tmtdb +
+'.[dbo].[TMT_INTEGRATIONID](''TMWSUITE'') EXEC ' + @tmtdb +
+'.[dbo].[TMTEXT_METERMAID_WITHVALIDATE] @UNITID,
+@ORDERTYPE,
+@ORDERID,
+@METERTYPE,
+@METERREADING,
+@METERDATE,
+@VALIDATE,
+@ERRORS OUTPUT,
+@CUSTOMERNAME,
+@INTEGRATIONID,
+@UNITTYPE'
+
+EXEC SP_EXECUTESQL @SQL, N' @UNITID VARCHAR(24),
+@ORDERTYPE VARCHAR(12),
+@ORDERID INTEGER,
+@METERTYPE VARCHAR(12),
+@METERREADING NUMERIC(15,6),
+@METERDATE DATETIME,
+@VALIDATE CHAR(1),
+@ERRORS INTEGER,
+@CUSTOMERNAME  VARCHAR(12),
+@UNITTYPE VARCHAR(12)',
+@trc_number,
+NULL,
+NULL,
+@METERTYPE,
+@evt_hubmiles,
+@METERDATE,
+NULL,
+@ERRORS,
+NULL,
+@TMTUNITTYPE
+
+END --  select @tmtdb = '[' + gi_string2 + ']' From generalinfo (NOLOCK) where gi_name = 'Shoplink'
+-- update the history table
+IF (SELECT COUNT(0)
+FROM  TMTECMTRANSFERHISTORY (NOLOCK)
+WHERE @trc_number = TRACTOR and TRCorTRL = 'TRC') > 0
+UPDATE TMTECMTRANSFERHISTORY
+SET LGH_MILES = @evt_hubmiles
+WHERE @trc_number = TRACTOR and TRCorTRL = 'TRC'
+ELSE
+INSERT TMTECMTRANSFERHISTORY (TRACTOR,
+LGH_MILES,
+TRCorTRL)
+VALUES (@trc_number,
+@evt_hubmiles,
+'TRC')
+END --@evt_hubmiles <> @lgh_miles
+END --If no mileage skip it
+
+IF @MINTEMPID < @MAXTEMPID
+BEGIN
+SELECT @MINTEMPID = [TEMPID]
+FROM @GETTRACTORS
+WHERE [TEMPID] > @MINTEMPID
+ORDER BY [TEMPID] DESC
+END
+ELSE
+BEGIN
+SELECT @MINTEMPID = (@MAXTEMPID + 1)
+END
+
+END -- END LOOP FOR UNITS
+-- Required for cross server connections.
+SET ANSI_NULLS OFF
+set ANSI_WARNINGS OFF
+
+GO
+GRANT EXECUTE ON  [dbo].[TMT_ECM_METER_TRANSFER] TO [public]
+GO

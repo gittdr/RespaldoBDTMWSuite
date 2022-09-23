@@ -1,0 +1,19 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+
+CREATE PROCEDURE [dbo].[Extra_Info_Get_Row_List_sp](@Extra_ID INTEGER, @Tab_ID INTEGER, @TableKey VARCHAR(50)) AS
+BEGIN
+/* Returns a list of tabs and columns defined under a particular header
+*/
+SELECT DISTINCT EXTRA_INFO_DATA.COL_ROW
+FROM	EXTRA_INFO_DATA
+WHERE	EXTRA_INFO_DATA.EXTRA_ID = @Extra_ID
+AND EXTRA_INFO_DATA.TAB_ID = @Tab_ID
+AND EXTRA_INFO_DATA.Table_Key = @TableKey
+ORDER BY EXTRA_INFO_DATA.COL_ROW
+END
+GO
+GRANT EXECUTE ON  [dbo].[Extra_Info_Get_Row_List_sp] TO [public]
+GO

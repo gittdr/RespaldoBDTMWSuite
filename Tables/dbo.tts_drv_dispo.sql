@@ -1,0 +1,33 @@
+CREATE TABLE [dbo].[tts_drv_dispo]
+(
+[Lider] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Proyecto] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[roadh] [int] NULL,
+[plnh] [int] NULL,
+[avlh] [int] NULL,
+[outh] [int] NULL,
+[road1] [int] NULL,
+[pln1] [int] NULL,
+[avl1] [int] NULL,
+[out1] [int] NULL,
+[road2] [int] NULL,
+[pln2] [int] NULL,
+[avl2] [int] NULL,
+[out2] [int] NULL,
+[road3] [int] NULL,
+[pln3] [int] NULL,
+[avl3] [int] NULL,
+[out3] [int] NULL,
+[road4] [int] NULL,
+[pln4] [int] NULL,
+[avl4] [int] NULL,
+[out4] [int] NULL,
+[roadm] [int] NULL,
+[plnm] [int] NULL,
+[avlm] [int] NULL,
+[outm] [int] NULL,
+[orden] [int] NULL,
+[Region] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ProyectoDrv] [varchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+GO

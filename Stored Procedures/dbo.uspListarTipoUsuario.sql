@@ -1,0 +1,12 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+CREATE procedure [dbo].[uspListarTipoUsuario]
+as
+begin
+select IIDTIPOUSUARIO,NOMBRE,DESCRIPCION
+from TipoUsuario
+where BHABILITADO=1
+end
+GO

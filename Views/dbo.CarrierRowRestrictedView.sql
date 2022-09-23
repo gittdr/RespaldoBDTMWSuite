@@ -1,0 +1,115 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+
+create view [dbo].[CarrierRowRestrictedView] AS
+SELECT [car_id]
+      ,[car_name]
+      ,[car_fedid]
+	  ,ISNULL([car_address1],(select top 1 ce_address1 from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_address1
+      ,ISNULL([car_address2],(select top 1 ce_address2 from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_address2
+      ,[cty_code]
+      ,[car_zip]
+      ,[pto_id]
+      ,[car_scac]
+	  ,ISNULL([car_contact],(select top 1 contact_name from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_contact      
+      ,[car_type1]
+      ,[car_type2]
+      ,[car_type3]
+      ,[car_type4]
+      ,[car_misc1]
+      ,[car_misc2]
+      ,[car_misc3]
+      ,[car_misc4]
+      ,ISNULL([car_phone1],(select top 1 ce_phone1 from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_phone1
+	  ,ISNULL([car_phone2],(select top 1 ce_phone2 from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_phone2
+	  ,ISNULL([car_phone3],(select top 1 ce_mobilenumber from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_phone3
+      ,[car_lastactivity]
+      ,[car_actg_type]
+      ,[car_iccnum]
+      ,[car_contract]
+      ,[car_otherid]
+      ,[car_usecashcard]
+      ,[car_status]
+      ,[car_board]
+      ,[car_updatedby]
+      ,[car_updateddate]
+      ,[car_createdate]
+      ,[car_exp1_date]
+      ,[car_exp2_date]
+      ,[car_terminationdt]
+	  ,ISNULL([car_email],(select top 1 email_address from companyemail where cmp_id = car.car_id and ce_defaultcontact = 'Y') ) as car_email
+      ,[car_service_location]
+      ,[car_country]
+      ,[car_gp_class]
+      ,[car_currency]
+      ,[car_agent]
+      ,[car_trltype1]
+      ,[car_trltype2]
+      ,[car_trltype3]
+      ,[car_trltype4]
+      ,[car_ins_cargolimits]
+      ,[car_ins_liabilitylimits]
+      ,[car_ins_certificate]
+      ,[car_ins_w9]
+      ,[car_ins_contract]
+      ,[car_exp1_enddate]
+      ,[car_exp2_enddate]
+      ,[car_204flag]
+      ,[car_210flag]
+      ,[car_214flag]
+      ,[car_branch]
+      ,[car_dotnum]
+      ,[car_rating]
+      ,[car_quickentry]
+      ,[car_loads_offered]
+      ,[car_loads_responded_to]
+      ,[car_loads_not_responded_to]
+      ,[car_loads_awarded]
+      ,[car_loads_on_time]
+      ,[car_confirmprint]
+      ,[car_confirmfax]
+      ,[car_confirmemail]
+      ,[car_confirmpathname]
+      ,[car_411_monitored]
+      ,[car_confirm_ir_id]
+      ,[car_confirm_irk_id]
+      ,[car_confirm_type]
+      ,[car_204tender]
+      ,[car_204update]
+      ,[car_extequip_interval_warnlevel]
+      ,[car_extequip_interval_hours]
+      ,[car_extequip_interval_maxcount]
+      ,[car_fgt_pay_terms]
+      ,[car_hazmat]
+      ,[car_approval_dt]
+      ,[car_sub_iccnum]
+      ,[car_eft_flag]
+      ,[car_web_address]
+      ,[car_region_type]
+      ,[car_manager]
+      ,[car_tier_rating]
+      ,[car_tenderloadby]
+      ,[car_204validate]
+	  ,[car_score]
+      --,[car_CarrierWatch_monitored]
+      ,[car_mt_type_loaded]
+      ,[car_mt_type_empty]
+      --,[car_CRMType]
+      ,[car_204_cancel_new]
+      ,[car_fuel_card_account_id]
+      ,[car_fuel_card_pay_type]
+	  ,car.rowsec_rsrv_id
+  FROM [dbo].[carrier] as car WITH(NOLOCK) 
+		INNER JOIN dbo.RowRestrictValidAssignments_for_tmwuser_fn_NET('carrier', null) rsva on (rsva.rowsec_rsrv_id = car.rowsec_rsrv_id or rsva.rowsec_rsrv_id = 0)
+
+GO
+GRANT DELETE ON  [dbo].[CarrierRowRestrictedView] TO [public]
+GO
+GRANT INSERT ON  [dbo].[CarrierRowRestrictedView] TO [public]
+GO
+GRANT SELECT ON  [dbo].[CarrierRowRestrictedView] TO [public]
+GO
+GRANT UPDATE ON  [dbo].[CarrierRowRestrictedView] TO [public]
+GO

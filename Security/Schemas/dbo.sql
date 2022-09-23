@@ -1,0 +1,12 @@
+GRANT DELETE ON SCHEMA:: [dbo] TO [public]
+GO
+GRANT EXECUTE ON SCHEMA:: [dbo] TO [public]
+GO
+GRANT INSERT ON SCHEMA:: [dbo] TO [public]
+GO
+GRANT SELECT ON SCHEMA:: [dbo] TO [public]
+GO
+GRANT UPDATE ON SCHEMA:: [dbo] TO [public]
+GO
+GRANT VIEW CHANGE TRACKING ON SCHEMA:: [dbo] TO [public]
+GO

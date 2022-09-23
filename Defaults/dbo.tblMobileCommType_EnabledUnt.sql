@@ -1,0 +1,4 @@
+SET QUOTED_IDENTIFIER OFF
+GO
+CREATE DEFAULT [dbo].[tblMobileCommType_EnabledUnt] AS '1/1/50'
+GO

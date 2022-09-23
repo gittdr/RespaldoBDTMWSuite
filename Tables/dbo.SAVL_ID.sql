@@ -1,0 +1,5 @@
+CREATE TABLE [dbo].[SAVL_ID]
+(
+[ID] [int] NULL
+) ON [PRIMARY]
+GO

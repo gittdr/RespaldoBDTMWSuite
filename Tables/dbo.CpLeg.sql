@@ -1,0 +1,9 @@
+CREATE TABLE [dbo].[CpLeg]
+(
+[id] [int] NOT NULL IDENTITY(1, 1),
+[Leg] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Condicion] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[CpLeg] ADD CONSTRAINT [PK__CpLeg__3213E83FCC1AE0F4] PRIMARY KEY CLUSTERED ([id]) ON [PRIMARY]
+GO

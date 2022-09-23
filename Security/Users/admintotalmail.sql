@@ -1,0 +1,2 @@
+CREATE USER [admintotalmail] WITHOUT LOGIN
+GO

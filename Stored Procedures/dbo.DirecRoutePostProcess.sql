@@ -1,0 +1,11 @@
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_NULLS ON
+GO
+
+CREATE PROCEDURE [dbo].[DirecRoutePostProcess]
+AS
+
+GO
+GRANT EXECUTE ON  [dbo].[DirecRoutePostProcess] TO [public]
+GO

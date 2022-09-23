@@ -1,0 +1,31 @@
+CREATE TABLE [dbo].[tts_bs_dispo]
+(
+[Region] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Proyecto] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[outh] [int] NULL,
+[dsph] [int] NULL,
+[stdh] [int] NULL,
+[inh] [int] NULL,
+[out1] [int] NULL,
+[dsp1] [int] NULL,
+[std1] [int] NULL,
+[in1] [int] NULL,
+[out2] [int] NULL,
+[dsp2] [int] NULL,
+[std2] [int] NULL,
+[in2] [int] NULL,
+[out3] [int] NULL,
+[dsp3] [int] NULL,
+[std3] [int] NULL,
+[in3] [int] NULL,
+[out4] [int] NULL,
+[dsp4] [int] NULL,
+[std4] [int] NULL,
+[in4] [int] NULL,
+[outm] [int] NULL,
+[dspm] [int] NULL,
+[stdm] [int] NULL,
+[inm] [int] NULL,
+[orden] [int] NULL
+) ON [PRIMARY]
+GO

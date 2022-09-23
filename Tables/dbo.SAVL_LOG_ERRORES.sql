@@ -1,0 +1,9 @@
+CREATE TABLE [dbo].[SAVL_LOG_ERRORES]
+(
+[ID_ERROR] [int] NOT NULL IDENTITY(1, 1),
+[SQL] [varchar] (250) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ERROR] [varchar] (250) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[CREADO] [datetime] NOT NULL,
+[ATENDIDO] [datetime] NULL
+) ON [PRIMARY]
+GO

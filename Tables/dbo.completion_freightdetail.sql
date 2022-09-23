@@ -1,0 +1,102 @@
+CREATE TABLE [dbo].[completion_freightdetail]
+(
+[fgt_number] [int] NOT NULL,
+[cmd_code] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_weight] [float] NULL,
+[fgt_weightunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_description] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[stp_number] [int] NULL,
+[fgt_count] [decimal] (10, 2) NULL,
+[fgt_countunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_volume] [float] NULL,
+[fgt_volumeunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_lowtemp] [smallint] NULL,
+[fgt_hitemp] [smallint] NULL,
+[fgt_sequence] [smallint] NULL,
+[fgt_length] [float] NULL,
+[fgt_lengthunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_height] [float] NULL,
+[fgt_heightunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_width] [float] NULL,
+[fgt_widthunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[timestamp] [timestamp] NULL,
+[fgt_reftype] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_refnum] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_quantity] [float] NULL,
+[fgt_rate] [money] NULL,
+[fgt_charge] [money] NULL,
+[fgt_rateunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[cht_itemcode] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[cht_basisunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_unit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[skip_trigger] [tinyint] NULL,
+[tare_weight] [float] NULL,
+[tare_weightunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_pallets_in] [float] NULL,
+[fgt_pallets_out] [float] NULL,
+[fgt_pallets_on_trailer] [float] NULL,
+[fgt_carryins1] [float] NULL,
+[fgt_carryins2] [float] NULL,
+[fgt_stackable] [varchar] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_ratingquantity] [float] NULL,
+[fgt_ratingunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_quantity_type] [smallint] NULL,
+[fgt_ordered_count] [real] NULL,
+[fgt_ordered_weight] [float] NULL,
+[tar_number] [int] NULL,
+[tar_tariffnumber] [varchar] (13) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[tar_tariffitem] [varchar] (13) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_charge_type] [smallint] NULL,
+[fgt_rate_type] [smallint] NULL,
+[fgt_loadingmeters] [decimal] (12, 4) NULL,
+[fgt_loadingmetersunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_additionl_description] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_specific_flashpoint] [float] NULL,
+[fgt_specific_flashpoint_unit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_ordered_volume] [decimal] (18, 0) NULL,
+[fgt_ordered_loadingmeters] [decimal] (18, 0) NULL,
+[fgt_pallet_type] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[cpr_density] [decimal] (9, 4) NULL,
+[scm_subcode] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_terms] [char] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_consignee] [char] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_shipper] [char] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_leg_origin] [char] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_leg_dest] [char] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_count2] [decimal] (10, 2) NULL,
+[fgt_count2unit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_bolid] [int] NULL,
+[fgt_bol_status] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_osdreason] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_osdquantity] [int] NULL,
+[fgt_osdunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_osdcomment] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_packageunit] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_completion_grossamt] [decimal] (9, 2) NULL,
+[fgt_completion_netamt] [decimal] (9, 2) NULL,
+[fgt_completion_grossnet_flag] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_completion_billedamt] [decimal] (9, 2) NULL,
+[fgt_completion_supplier_id] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_completion_supplier_name] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_completion_supplier_ctyst] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_completion_bol] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_completion_subcmd_list] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fgt_parentcmd_number] [int] NULL,
+[fgt_completion_sequence] [int] NULL,
+[fgt_completion_accountof] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[completion_freightdetail] ADD CONSTRAINT [PK_completion_freightdetail] PRIMARY KEY CLUSTERED ([fgt_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [dk_completion_freightdetail_con_stp_vol] ON [dbo].[completion_freightdetail] ([stp_number], [fgt_consignee], [fgt_volume]) ON [PRIMARY]
+GO
+GRANT DELETE ON  [dbo].[completion_freightdetail] TO [public]
+GO
+GRANT INSERT ON  [dbo].[completion_freightdetail] TO [public]
+GO
+GRANT REFERENCES ON  [dbo].[completion_freightdetail] TO [public]
+GO
+GRANT SELECT ON  [dbo].[completion_freightdetail] TO [public]
+GO
+GRANT UPDATE ON  [dbo].[completion_freightdetail] TO [public]
+GO
