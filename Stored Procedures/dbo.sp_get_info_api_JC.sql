@@ -17,9 +17,9 @@ st.lgh_number = le.lgh_number and
 le.lgh_tractor = tr.trc_number and
 st.cmp_id        = co.cmp_id and
 st.lgh_number in (
-select lgh_number from legheader where lgh_outstatus = 'PLN' and 
-lgh_tractor in ('1601','1766','1774','1789','1790','1791','1792','1793','1794','1795','1796','1797','1799','1800','1801','1759','1854','1602','1762','1852','1848','1846','1853','1768')
+select lgh_number from legheader where lgh_outstatus = 'PLN'
 )and le.ord_hdrnumber = @order
 order by le.ord_hdrnumber,st.stp_mfh_sequence
 END
+
 GO

@@ -7,6 +7,7 @@ CREATE PROCEDURE [dbo].[sp_Total_Order_TA_JC]
 	
 AS
 BEGIN
-        SELECT COUNT(*) as total FROM Reporte_Timbradas WHERE estatus in ('1','2','9')
+        SELECT COUNT(*) as total FROM Reporte_Timbradas WHERE fechaTimbrado !='null' AND estatus in ('1','2','9')
 END
+
 GO
