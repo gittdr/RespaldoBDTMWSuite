@@ -95,7 +95,8 @@ CREATE TABLE [dbo].[commodity]
 [cmd_ams_reason] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cmd_ams_complaint] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cmd_rvp] [float] NULL,
-[cmd_size] [float] NULL
+[cmd_size] [float] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__commodity__INS_T__3D9DD89D] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -281,6 +282,8 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX [cmd_code_num] ON [dbo].[commodity] ([cmd_code_num]) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [cmd_name] ON [dbo].[commodity] ([cmd_name]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [commodity_INS_TIMESTAMP] ON [dbo].[commodity] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Commodity_timestamp] ON [dbo].[commodity] ([timestamp]) ON [PRIMARY]
 GO

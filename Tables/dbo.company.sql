@@ -320,7 +320,8 @@ CREATE TABLE [dbo].[company]
 [trl_freedays] [int] NOT NULL CONSTRAINT [DF__company__trl_fre__23DC0C58] DEFAULT ('0'),
 [trl_maxcharge] [money] NULL,
 [cmp_DRBack] [int] NULL,
-[cmp_DROut] [int] NULL
+[cmp_DROut] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__company__INS_TIM__407A4548] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1543,6 +1544,8 @@ CREATE NONCLUSTERED INDEX [dk_company_zip] ON [dbo].[company] ([cmp_zip]) ON [PR
 GO
 CREATE NONCLUSTERED INDEX [dk_external_id] ON [dbo].[company] ([external_id]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [company_INS_TIMESTAMP] ON [dbo].[company] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [idx_Company_timestamp] ON [dbo].[company] ([timestamp]) ON [PRIMARY]
 GO
 CREATE STATISTICS [_dta_stat_453576654_13_14_60_1] ON [dbo].[company] ([cmp_othertype1], [cmp_othertype2], [cmp_transfertype], [cmp_id])
@@ -1566,4 +1569,12 @@ GO
 DECLARE @xp float
 SELECT @xp=1.01
 EXEC sp_addextendedproperty N'Version', @xp, 'SCHEMA', N'dbo', 'TABLE', N'company', 'TRIGGER', N'ut_company'
+GO
+DECLARE @xp float
+SELECT @xp=1.01
+
+GO
+DECLARE @xp float
+SELECT @xp=1.01
+
 GO

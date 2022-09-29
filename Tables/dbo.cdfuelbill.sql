@@ -106,7 +106,8 @@ CREATE TABLE [dbo].[cdfuelbill]
 [cfb_otherfuelprocessed] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cfb_rfid_trans] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cfb_drv_pin] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__cdfuelbil__INS_T__39CD47B9] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -131,6 +132,8 @@ GO
 CREATE NONCLUSTERED INDEX [DK_cdfuelbill_transnumber] ON [dbo].[cdfuelbill] ([cfb_transnumber]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_CDFuelbill_timestamp] ON [dbo].[cdfuelbill] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [cdfuelbill_INS_TIMESTAMP] ON [dbo].[cdfuelbill] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[cdfuelbill] ADD CONSTRAINT [fk_cdfuelbilltocashcard] FOREIGN KEY ([cfb_cardnumber], [cfb_accountid], [cfb_customerid]) REFERENCES [dbo].[cashcard] ([crd_cardnumber], [crd_accountid], [crd_customerid])
 GO

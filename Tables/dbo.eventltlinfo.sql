@@ -11,10 +11,13 @@ CREATE TABLE [dbo].[eventltlinfo]
 [unit_pos] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__eventltli__unit___5A2DFF97] DEFAULT (''),
 [plan_status] [varchar] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__eventltli__plan___5B2223D0] DEFAULT (''),
 [ref_evt_number] [int] NULL CONSTRAINT [DF__eventltli__ref_e__5C164809] DEFAULT ((0)),
-[rowchgts] [timestamp] NOT NULL
+[rowchgts] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__eventltli__INS_T__453EFA65] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[eventltlinfo] ADD CONSTRAINT [PK__eventltl__00774C8958BDCF6C] PRIMARY KEY CLUSTERED ([evt_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [eventltlinfo_INS_TIMESTAMP] ON [dbo].[eventltlinfo] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[eventltlinfo] TO [public]
 GO

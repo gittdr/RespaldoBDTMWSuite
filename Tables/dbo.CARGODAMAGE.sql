@@ -47,12 +47,15 @@ CREATE TABLE [dbo].[CARGODAMAGE]
 [cdm_date5] [datetime] NULL,
 [cdm_CargoDamageType5] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cdm_CargoDamageType6] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__CARGODAMA__INS_T__35FCB6D5] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_cdmID] ON [dbo].[CARGODAMAGE] ([cdm_ID]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_CARGODAMAGE_timestamp] ON [dbo].[CARGODAMAGE] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [CARGODAMAGE_INS_TIMESTAMP] ON [dbo].[CARGODAMAGE] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [INX_srpcmd] ON [dbo].[CARGODAMAGE] ([srp_ID], [cmd_code]) ON [PRIMARY]
 GO

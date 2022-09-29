@@ -14,10 +14,14 @@ CREATE TABLE [dbo].[BillDoctypes]
 [bdt_terms] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [bdt_inv_attachcredit] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [bdt_inv_attachrebill] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[bdt_inv_attachsupp] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[bdt_inv_attachsupp] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__BillDocty__INS_T__34146E63] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_cmpidseq] ON [dbo].[BillDoctypes] ([cmp_id], [bdt_sequence]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [BillDoctypes_INS_TIMESTAMP] ON [dbo].[BillDoctypes] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[BillDoctypes] TO [public]
 GO

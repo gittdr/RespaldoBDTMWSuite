@@ -43,12 +43,15 @@ CREATE TABLE [dbo].[EERESPONSE]
 [eer_ResponseType2] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [eer_ResponseType3] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [eer_ResponseType4] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__EERESPONS__INS_T__4356B1F3] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_EERESPONSE_timestamp] ON [dbo].[EERESPONSE] ([dw_timestamp]) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_eerID] ON [dbo].[EERESPONSE] ([eer_ID]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [EERESPONSE_INS_TIMESTAMP] ON [dbo].[EERESPONSE] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_srptypekey] ON [dbo].[EERESPONSE] ([srp_ID], [eer_MppOrEeID], [eer_Date]) ON [PRIMARY]
 GO

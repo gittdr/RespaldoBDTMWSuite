@@ -46,7 +46,8 @@ CREATE TABLE [dbo].[city]
 [cty_ALK_FileValidatedYR] [int] NULL,
 [cty_splc_char] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cty_zip_sort] [int] NULL,
-[citypoint] [sys].[geography] NULL
+[citypoint] [sys].[geography] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__city__INS_TIMEST__3BB5902B] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -287,6 +288,8 @@ GO
 CREATE NONCLUSTERED INDEX [k_cty_name_state] ON [dbo].[city] ([cty_state], [cty_name], [cty_county], [cty_fuelcreate]) INCLUDE ([cty_latitude], [cty_longitude], [cty_zip]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_cty_zip] ON [dbo].[city] ([cty_zip]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [city_INS_TIMESTAMP] ON [dbo].[city] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_city_timestamp] ON [dbo].[city] ([timestamp]) ON [PRIMARY]
 GO

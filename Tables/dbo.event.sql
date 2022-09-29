@@ -51,7 +51,8 @@ CREATE TABLE [dbo].[event]
 [evt_mfh_number] [int] NULL CONSTRAINT [DF__event__evt_mfh_n__5198B996] DEFAULT ((0)),
 [evt_dock_worker] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [item_id] [int] NULL CONSTRAINT [DF__event__item_id__528CDDCF] DEFAULT ((0)),
-[evt_forklift] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[evt_forklift] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__event__INS_TIMES__444AD62C] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1764,6 +1765,8 @@ GO
 CREATE NONCLUSTERED INDEX [ix_evt_status_trailer] ON [dbo].[event] ([evt_status], [evt_trailer1], [evt_startdate], [stp_number]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_EVT_TMTUPDATE] ON [dbo].[event] ([evt_trailer1], [evt_startdate], [stp_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [event_INS_TIMESTAMP] ON [dbo].[event] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [shipment] ON [dbo].[event] ([ord_hdrnumber]) ON [PRIMARY]
 GO

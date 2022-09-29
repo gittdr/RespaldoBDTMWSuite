@@ -11,12 +11,15 @@ CREATE TABLE [dbo].[cdcustcode]
 [ccc_id_unique] [int] NOT NULL IDENTITY(1, 1),
 [rowsec_rsrv_id] [int] NULL,
 [brn_id] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__cdcustcod__INS_T__38D92380] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[cdcustcode] ADD CONSTRAINT [pk_cdcustcode] PRIMARY KEY CLUSTERED ([cac_id], [ccc_id]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_CDCustcode_timestamp] ON [dbo].[cdcustcode] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [cdcustcode_INS_TIMESTAMP] ON [dbo].[cdcustcode] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[cdcustcode] ADD CONSTRAINT [fk_cdcustcodetoacctcode] FOREIGN KEY ([cac_id]) REFERENCES [dbo].[cdacctcode] ([cac_id])
 GO

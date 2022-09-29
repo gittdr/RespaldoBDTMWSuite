@@ -29,7 +29,8 @@ CREATE TABLE [dbo].[assetassignment]
 [asgn_payto] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [termCode] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [PayScheduleId] [int] NULL,
-[asgn_pld_event] [int] NULL
+[asgn_pld_event] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__assetassi__INS_T__322C25F1] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -422,6 +423,8 @@ GO
 CREATE NONCLUSTERED INDEX [ix_aa_type_id_leg] ON [dbo].[assetassignment] ([asgn_type], [asgn_id], [lgh_number]) INCLUDE ([pyd_status]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_evt_number] ON [dbo].[assetassignment] ([evt_number]) WITH (FILLFACTOR=90) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [assetassignment_INS_TIMESTAMP] ON [dbo].[assetassignment] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [d_lghnum] ON [dbo].[assetassignment] ([lgh_number]) WITH (FILLFACTOR=90) ON [PRIMARY]
 GO

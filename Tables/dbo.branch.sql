@@ -73,7 +73,8 @@ CREATE TABLE [dbo].[branch]
 [brn_paypartialclose] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_brn_paypartialclose] DEFAULT ('N'),
 [cc_reOpenDate] [datetime] NULL,
 [cc_OK_ToReOpen] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[cc_NextPayrollPeriod] [datetime] NULL
+[cc_NextPayrollPeriod] [datetime] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__branch__INS_TIME__3508929C] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -199,6 +200,8 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX [pk_branch] ON [dbo].[branch] ([brn_id]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_branch_timestamp] ON [dbo].[branch] ([brn_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [branch_INS_TIMESTAMP] ON [dbo].[branch] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[branch] TO [public]
 GO

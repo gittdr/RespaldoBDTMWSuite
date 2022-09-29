@@ -59,7 +59,8 @@ CREATE TABLE [dbo].[chargetype]
 [cht_ChargeTypeBasisUnitRule_Id] [int] NULL,
 [cht_car_split] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cht_applies_to] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[cht_ICpercentage] [money] NULL
+[cht_ICpercentage] [money] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__chargetyp__INS_T__3AC16BF2] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -228,6 +229,8 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX [pk_cht_number] ON [dbo].[chargetype] ([cht_number]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_chargetype_timestamp] ON [dbo].[chargetype] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [chargetype_INS_TIMESTAMP] ON [dbo].[chargetype] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[chargetype] ADD CONSTRAINT [fk_chargetype_cht_ChargeTypeBasisUnitRule_Id] FOREIGN KEY ([cht_ChargeTypeBasisUnitRule_Id]) REFERENCES [dbo].[ChargeTypeBasisUnitRule] ([Id])
 GO

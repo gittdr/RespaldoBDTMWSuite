@@ -111,7 +111,8 @@ CREATE TABLE [dbo].[carrier]
 [car_score] [int] NULL,
 [car_preventrating] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [car_req_cin] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF_car_req_cin] DEFAULT ('N'),
-[OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__carrier__INS_TIM__36F0DB0E] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -989,6 +990,8 @@ GO
 CREATE NONCLUSTERED INDEX [idx_Carrier_CarIccNum] ON [dbo].[carrier] ([car_iccnum]) INCLUDE ([car_id]) WITH (FILLFACTOR=90) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Carrier_timestamp] ON [dbo].[carrier] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [carrier_INS_TIMESTAMP] ON [dbo].[carrier] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_carrier_ptoid] ON [dbo].[carrier] ([pto_id], [car_name]) WITH (FILLFACTOR=90) ON [PRIMARY]
 GO

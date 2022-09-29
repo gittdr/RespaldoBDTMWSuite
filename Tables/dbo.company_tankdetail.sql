@@ -40,7 +40,8 @@ CREATE TABLE [dbo].[company_tankdetail]
 [Meter_Factor] [decimal] (10, 2) NULL,
 [Temp_Comp_Meter] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [MeterProvingDate] [datetime] NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__company_t__INS_T__416E6981] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[company_tankdetail] ADD CONSTRAINT [PK_CompanyType] PRIMARY KEY CLUSTERED ([cmp_id], [cmp_tank_id], [CompanyType]) ON [PRIMARY]
@@ -48,6 +49,8 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX [company_tank_key] ON [dbo].[company_tankdetail] ([ctd_identity]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_company_tankdetail_timestamp] ON [dbo].[company_tankdetail] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [company_tankdetail_INS_TIMESTAMP] ON [dbo].[company_tankdetail] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ix_company_tankdetail_model_id] ON [dbo].[company_tankdetail] ([model_id]) ON [PRIMARY]
 GO

@@ -25,10 +25,13 @@ CREATE TABLE [dbo].[cod]
 [cmp_id] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [branch_id] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [legalentity_id] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[payment_type] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[payment_type] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__cod__INS_TIMESTA__3CA9B464] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[cod] ADD CONSTRAINT [PK__cod__68673FEF0B110F8B] PRIMARY KEY CLUSTERED ([ord_hdrnumber]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [cod_INS_TIMESTAMP] ON [dbo].[cod] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[cod] TO [public]
 GO

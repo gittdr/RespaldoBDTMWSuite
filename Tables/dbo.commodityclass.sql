@@ -9,8 +9,12 @@ CREATE TABLE [dbo].[commodityclass]
 [default_uom] [varchar] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ccl_displayorder] [int] NULL,
 [ccl_exclusive] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF__commodity__ccl_e__55992D06] DEFAULT ('N'),
-[ccl_volumefromloads] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[ccl_volumefromloads] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__commodity__INS_T__3E91FCD6] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [commodityclass_INS_TIMESTAMP] ON [dbo].[commodityclass] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[commodityclass] TO [public]
 GO

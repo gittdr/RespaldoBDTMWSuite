@@ -28,7 +28,8 @@ CREATE TABLE [dbo].[expiration]
 [exp_acceptable_start] [datetime] NULL,
 [exp_acceptable_end] [datetime] NULL,
 [exp_recurrence] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF_expiration_exp_recurrence] DEFAULT ('ONCE'),
-[trlStgID] [int] NULL
+[trlStgID] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__expiratio__INS_T__46331E9E] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -906,6 +907,8 @@ GO
 CREATE NONCLUSTERED INDEX [dk_expiration_gettariffkeys] ON [dbo].[expiration] ([exp_id], [exp_idtype], [exp_completed], [exp_priority], [exp_expirationdate]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_idtype] ON [dbo].[expiration] ([exp_idtype], [exp_id], [exp_code], [exp_expirationdate], [exp_description]) INCLUDE ([exp_completed], [exp_compldate]) WITH (FILLFACTOR=95) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [expiration_INS_TIMESTAMP] ON [dbo].[expiration] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Expiration_timestamp] ON [dbo].[expiration] ([timestamp]) ON [PRIMARY]
 GO
