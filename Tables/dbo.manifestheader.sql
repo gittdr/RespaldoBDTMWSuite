@@ -24,7 +24,8 @@ CREATE TABLE [dbo].[manifestheader]
 [deliveries_done] [int] NULL,
 [ord_count] [int] NULL,
 [remarks] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[terminal_schedule_id] [int] NULL
+[terminal_schedule_id] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__manifesth__INS_T__5EFECC68] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -52,6 +53,8 @@ as
   select (case when not exists(select 1 from deleted where inserted.mfh_number = deleted.mfh_number) then 'I' else 'U' end),  
   @tmwuser, GETDATE(),[stp_number_start],[stp_number_end],[mfh_number],[mov_number],[unit_type],[unit_id],[seal_number],[is_active],[cmp_id],[is_committed],[manifest_type],[recommended_door],[planned_ob_door],[route_id],[status]      
      from inserted
+GO
+CREATE NONCLUSTERED INDEX [manifestheader_INS_TIMESTAMP] ON [dbo].[manifestheader] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [manifest_mov] ON [dbo].[manifestheader] ([mov_number]) ON [PRIMARY]
 GO

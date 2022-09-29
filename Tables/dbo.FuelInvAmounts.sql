@@ -58,7 +58,9 @@ CREATE TABLE [dbo].[FuelInvAmounts]
 [inv_readingreviewed7] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_fuelinvamounts_inv_readingreviewed7] DEFAULT ('N'),
 [inv_readingreviewed8] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_fuelinvamounts_inv_readingreviewed8] DEFAULT ('N'),
 [inv_readingreviewed9] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_fuelinvamounts_inv_readingreviewed9] DEFAULT ('N'),
-[inv_readingreviewed10] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_fuelinvamounts_inv_readingreviewed10] DEFAULT ('N')
+[inv_readingreviewed10] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_fuelinvamounts_inv_readingreviewed10] DEFAULT ('N'),
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__FuelInvAm__INS_T__5298F583] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -139,6 +141,8 @@ GO
 CREATE NONCLUSTERED INDEX [dx_CompanyID_ReadingDate_ID] ON [dbo].[FuelInvAmounts] ([cmp_id], [inv_readingdate], [inv_id]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dx_CompanyID_Type_Values_ID] ON [dbo].[FuelInvAmounts] ([cmp_id], [inv_value1], [inv_type], [inv_value2], [inv_value3], [inv_value4], [inv_value5], [inv_value6], [inv_value7], [inv_value8], [inv_value9], [inv_value10], [inv_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [FuelInvAmounts_INS_TIMESTAMP] ON [dbo].[FuelInvAmounts] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[FuelInvAmounts] TO [public]
 GO

@@ -13,12 +13,15 @@ CREATE TABLE [dbo].[terminaldetail]
 [turnaround_hours] [int] NULL CONSTRAINT [DF__terminald__turna__191F5649] DEFAULT ((0)),
 [rowchgts] [timestamp] NOT NULL,
 [check_stop_master] [int] NULL,
-[auto_apply_reweigh] [varchar] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[auto_apply_reweigh] [varchar] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__terminald__INS_T__74EE0D87] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[terminaldetail] ADD CONSTRAINT [CK__terminald__owner__145AA12C] CHECK (([ownership_type]='U' OR [ownership_type]='V' OR [ownership_type]='C'))
 GO
 ALTER TABLE [dbo].[terminaldetail] ADD CONSTRAINT [PK__terminal__CD425FDDCDE98A29] PRIMARY KEY CLUSTERED ([cmp_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [terminaldetail_INS_TIMESTAMP] ON [dbo].[terminaldetail] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[terminaldetail] TO [public]
 GO

@@ -223,7 +223,8 @@ CREATE TABLE [dbo].[manpowerprofile]
 [CompensationType] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [mpp_carrier] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[mpp_usize] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[mpp_usize] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__manpowerp__INS_T__5FF2F0A1] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1698,6 +1699,8 @@ GO
 ALTER TABLE [dbo].[manpowerprofile] ADD CONSTRAINT [mpp_ckmcommtype] CHECK (([dbo].[CheckLabel]([mpp_mcommType],'MCommSystem',(1))=(1)))
 GO
 ALTER TABLE [dbo].[manpowerprofile] ADD CONSTRAINT [PK_manpowerprofile] PRIMARY KEY NONCLUSTERED ([mpp_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [manpowerprofile_INS_TIMESTAMP] ON [dbo].[manpowerprofile] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [u_mpp_id] ON [dbo].[manpowerprofile] ([mpp_id]) ON [PRIMARY]
 GO

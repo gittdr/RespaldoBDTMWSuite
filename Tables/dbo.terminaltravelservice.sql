@@ -31,8 +31,12 @@ CREATE TABLE [dbo].[terminaltravelservice]
 [beyond_city] [int] NULL,
 [beyond_state] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [requestor] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[beyond_country] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[beyond_country] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__terminalt__INS_T__76D655F9] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [terminaltravelservice_INS_TIMESTAMP] ON [dbo].[terminaltravelservice] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [termtravserv_ord_hdrnumber] ON [dbo].[terminaltravelservice] ([ord_hdrnumber]) ON [PRIMARY]
 GO

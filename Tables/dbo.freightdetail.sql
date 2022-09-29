@@ -128,7 +128,8 @@ CREATE TABLE [dbo].[freightdetail]
 [fgt_un_id] [int] NULL,
 [fgt_number_copied_fromorder] [int] NULL,
 [fgt_size] [decimal] (5, 2) NULL,
-[fgt_app_eqcodes] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[fgt_app_eqcodes] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__freightde__INS_T__50B0AD11] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -564,6 +565,8 @@ GO
 CREATE NONCLUSTERED INDEX [ix_fgt_fgt_parentcmd_fgt_number] ON [dbo].[freightdetail] ([fgt_parentcmd_fgt_number]) INCLUDE ([fgt_number], [fgt_volume], [fgt_volume2]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [sk_freightdetail_fgt_refnum] ON [dbo].[freightdetail] ([fgt_refnum], [fgt_reftype], [stp_number]) INCLUDE ([fgt_description], [fgt_bolid]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [freightdetail_INS_TIMESTAMP] ON [dbo].[freightdetail] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [freightdetail_order_hdrnumber] ON [dbo].[freightdetail] ([order_hdrnumber], [fgt_number]) ON [PRIMARY]
 GO

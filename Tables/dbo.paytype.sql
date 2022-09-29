@@ -67,7 +67,8 @@ CREATE TABLE [dbo].[paytype]
 [pyt_requireaudit] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pyt_category2] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pyt_category3] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[pyt_category4] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[pyt_category4] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__paytype__INS_TIM__6A707F14] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -182,6 +183,8 @@ GO
 ALTER TABLE [dbo].[paytype] ADD CONSTRAINT [PK_paytype] PRIMARY KEY CLUSTERED ([pyt_itemcode]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_paytype_timestamp] ON [dbo].[paytype] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [paytype_INS_TIMESTAMP] ON [dbo].[paytype] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [pk_number] ON [dbo].[paytype] ([pyt_number]) ON [PRIMARY]
 GO

@@ -10,7 +10,8 @@ CREATE TABLE [dbo].[paperwork]
 [lgh_number] [int] NULL,
 [pw_imaged] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__paperwork__pw_im__4749136D] DEFAULT ('N'),
 [pw_ident] [int] NOT NULL IDENTITY(1, 1),
-[Mov_Number] [int] NULL
+[Mov_Number] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__paperwork__INS_T__669FEE30] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -63,6 +64,8 @@ BEGIN
 	
 END
 
+GO
+CREATE NONCLUSTERED INDEX [paperwork_INS_TIMESTAMP] ON [dbo].[paperwork] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IX_paperwork_lgh_number] ON [dbo].[paperwork] ([lgh_number]) INCLUDE ([Mov_Number]) ON [PRIMARY]
 GO

@@ -199,7 +199,8 @@ CREATE TABLE [dbo].[tractorprofile]
 [trc_use_rfid] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [trc_rfid_tag] [varchar] (24) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[trc_ams_type] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[trc_ams_type] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__tractorpr__INS_T__7C8F2F4F] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1555,6 +1556,8 @@ GO
 ALTER TABLE [dbo].[tractorprofile] ADD CONSTRAINT [trc_ckmcommtype] CHECK (([dbo].[CheckLabel]([trc_mcommType],'MCommSystem',(1))=(1)))
 GO
 ALTER TABLE [dbo].[tractorprofile] ADD CONSTRAINT [pk_trc_number] PRIMARY KEY CLUSTERED ([trc_number]) WITH (FILLFACTOR=100) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [tractorprofile_INS_TIMESTAMP] ON [dbo].[tractorprofile] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Tractorprofile_timestamp] ON [dbo].[tractorprofile] ([timestamp]) ON [PRIMARY]
 GO

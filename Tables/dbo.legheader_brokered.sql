@@ -50,7 +50,9 @@ CREATE TABLE [dbo].[legheader_brokered]
 [lgh_wants_reload] [bit] NULL,
 [lgh_reload_city] [int] NOT NULL CONSTRAINT [DF__legheader__lgh_r__4A185A87] DEFAULT ((0)),
 [lgh_confirm_cc] [bit] NULL,
-[lgh_email_cc] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[lgh_email_cc] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__legheader__INS_T__5A3A174B] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -193,6 +195,8 @@ END
 
 GO
 ALTER TABLE [dbo].[legheader_brokered] ADD CONSTRAINT [PK__legheader_broker__12572562] PRIMARY KEY CLUSTERED ([lgh_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [legheader_brokered_INS_TIMESTAMP] ON [dbo].[legheader_brokered] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [lhb_pay_hdrnumber] ON [dbo].[legheader_brokered] ([pay_hdrnumber], [lgh_number]) ON [PRIMARY]
 GO

@@ -65,7 +65,8 @@ CREATE TABLE [dbo].[thirdpartyprofile]
 [ThirdPartyType3] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ThirdPartyType4] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [PayScheduleId] [int] NULL,
-[OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__thirdpart__INS_T__7AA6E6DD] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -159,6 +160,8 @@ GO
 ALTER TABLE [dbo].[thirdpartyprofile] ADD CONSTRAINT [PK__thirdpartyprofil__395884C4] PRIMARY KEY CLUSTERED ([tpr_id]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_ThirdPartyProfile_timestamp] ON [dbo].[thirdpartyprofile] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [thirdpartyprofile_INS_TIMESTAMP] ON [dbo].[thirdpartyprofile] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_tpr_cty] ON [dbo].[thirdpartyprofile] ([tpr_city]) WITH (FILLFACTOR=90) ON [PRIMARY]
 GO

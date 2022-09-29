@@ -288,7 +288,8 @@ CREATE TABLE [dbo].[orderheader]
 [ord_approved] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ord_triprpt_last_rundate] [datetime] NULL,
 [ord_app_eqcodes] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ord_ediaccepttext] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[ord_ediaccepttext] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__orderhead__INS_T__63C38185] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2123,6 +2124,8 @@ BEGIN
 END
 GO
 CREATE NONCLUSTERED INDEX [dk_order_external_id] ON [dbo].[orderheader] ([external_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [orderheader_INS_TIMESTAMP] ON [dbo].[orderheader] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_mov_number] ON [dbo].[orderheader] ([mov_number], [ord_billto]) WITH (FILLFACTOR=95) ON [PRIMARY]
 GO

@@ -78,12 +78,15 @@ CREATE TABLE [dbo].[INCIDENT]
 [inc_date4] [datetime] NULL,
 [inc_date5] [datetime] NULL,
 [inc_bigstring1] [varchar] (4000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__INCIDENT__INS_TI__54813DF5] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_INCIDENT_timestamp] ON [dbo].[INCIDENT] ([dw_timestamp]) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_incID] ON [dbo].[INCIDENT] ([inc_ID]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [INCIDENT_INS_TIMESTAMP] ON [dbo].[INCIDENT] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_srpEEDate] ON [dbo].[INCIDENT] ([srp_ID], [inc_Sequence]) ON [PRIMARY]
 GO

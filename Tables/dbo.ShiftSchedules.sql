@@ -28,10 +28,13 @@ CREATE TABLE [dbo].[ShiftSchedules]
 [ss_hoursplannedatlogin] [float] NOT NULL CONSTRAINT [DF__ShiftSche__ss_ho__427738BF] DEFAULT ((0)),
 [ss_hoursutilized] [float] NOT NULL CONSTRAINT [DF__ShiftSche__ss_ho__436B5CF8] DEFAULT ((0)),
 [ss_ivr_status] [varchar] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF__ShiftSche__ss_iv__445F8131] DEFAULT ('N'),
-[ss_tripsumrpt_last_rundate] [datetime] NULL
+[ss_tripsumrpt_last_rundate] [datetime] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__ShiftSche__INS_T__711D7CA3] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[ShiftSchedules] ADD CONSTRAINT [pk_shiftschedules] PRIMARY KEY CLUSTERED ([ss_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [ShiftSchedules_INS_TIMESTAMP] ON [dbo].[ShiftSchedules] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [uk_shiftschedules_mpp_id_ss_date] ON [dbo].[ShiftSchedules] ([mpp_id], [ss_date]) ON [PRIMARY]
 GO

@@ -53,7 +53,8 @@ CREATE TABLE [dbo].[payto]
 [pto_asset_maintenance_type3] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [df_pto_asset_maintenance_type3] DEFAULT ('UNK'),
 [pto_make_billto] [int] NULL CONSTRAINT [DF_payto_make_billto] DEFAULT ((0)),
 [pto_stlByPayTo] [bit] NULL,
-[PayScheduleId] [int] NULL
+[PayScheduleId] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__payto__INS_TIMES__697C5ADB] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -173,6 +174,8 @@ END
                                           
 GO
 ALTER TABLE [dbo].[payto] ADD CONSTRAINT [PK_payto] PRIMARY KEY CLUSTERED ([pto_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [payto_INS_TIMESTAMP] ON [dbo].[payto] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_pto_altid] ON [dbo].[payto] ([pto_altid]) ON [PRIMARY]
 GO

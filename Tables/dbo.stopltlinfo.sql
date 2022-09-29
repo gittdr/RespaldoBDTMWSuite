@@ -17,10 +17,13 @@ CREATE TABLE [dbo].[stopltlinfo]
 [temperature_control] [varchar] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__stopltlin__tempe__0AD136F2] DEFAULT ('N'),
 [ref_stp_number] [int] NULL CONSTRAINT [DF__stopltlin__ref_s__0BC55B2B] DEFAULT ((0)),
 [stp_latitude] [int] NULL CONSTRAINT [DF__stopltlin__stp_l__0CB97F64] DEFAULT ((0)),
-[stp_longitude] [int] NULL CONSTRAINT [DF__stopltlin__stp_l__0DADA39D] DEFAULT ((0))
+[stp_longitude] [int] NULL CONSTRAINT [DF__stopltlin__stp_l__0DADA39D] DEFAULT ((0)),
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__stopltlin__INS_T__7305C515] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[stopltlinfo] ADD CONSTRAINT [PK__stopltli__245EE02368BF0E04] PRIMARY KEY CLUSTERED ([stp_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [stopltlinfo_INS_TIMESTAMP] ON [dbo].[stopltlinfo] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[stopltlinfo] TO [public]
 GO

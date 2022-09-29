@@ -195,7 +195,8 @@ CREATE TABLE [dbo].[invoiceheader]
 [ivh_subcompany] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ivh_lh_charge_with_rollin] [money] NULL,
 [ivh_rollin_lh_rate] [money] NULL,
-[ivh_lh_charge] [money] NULL
+[ivh_lh_charge] [money] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__invoicehe__INS_T__575DAAA0] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1697,6 +1698,8 @@ END
 
 GO
 CREATE NONCLUSTERED INDEX [dk_ivh_dbhid_ivhbillto] ON [dbo].[invoiceheader] ([dbh_id], [ivh_billto]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [invoiceheader_INS_TIMESTAMP] ON [dbo].[invoiceheader] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_applyto] ON [dbo].[invoiceheader] ([ivh_applyto]) ON [PRIMARY]
 GO

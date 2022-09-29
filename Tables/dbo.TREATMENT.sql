@@ -20,10 +20,13 @@ CREATE TABLE [dbo].[TREATMENT]
 [trt_Diagnosis] [varchar] (8000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [trt_MedicalRestrictions] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [trt_NextAppt] [datetime] NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__TREATMENT__INS_T__7E7777C1] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_TREATMENT_timestamp] ON [dbo].[TREATMENT] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [TREATMENT_INS_TIMESTAMP] ON [dbo].[TREATMENT] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [INX_srpinj] ON [dbo].[TREATMENT] ([srp_ID], [inj_sequence], [trt_Date], [trt_ID]) ON [PRIMARY]
 GO

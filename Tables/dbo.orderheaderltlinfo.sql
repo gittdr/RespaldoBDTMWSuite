@@ -37,12 +37,15 @@ CREATE TABLE [dbo].[orderheaderltlinfo]
 [delivery_terminal_transfer] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pickup_number] [int] NULL,
 [con_id] [int] NULL,
-[delivery_number] [int] NULL
+[delivery_number] [int] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__orderhead__INS_T__64B7A5BE] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[orderheaderltlinfo] ADD CONSTRAINT [PK__orderhea__68673FEF435F2F00] PRIMARY KEY CLUSTERED ([ord_hdrnumber]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ohltl_delv_term] ON [dbo].[orderheaderltlinfo] ([delivery_terminal], [ord_hdrnumber]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [orderheaderltlinfo_INS_TIMESTAMP] ON [dbo].[orderheaderltlinfo] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ohltl_pick_term] ON [dbo].[orderheaderltlinfo] ([pickup_terminal], [ord_hdrnumber]) ON [PRIMARY]
 GO

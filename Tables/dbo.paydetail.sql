@@ -153,7 +153,8 @@ CREATE TABLE [dbo].[paydetail]
 [pyd_pair] [int] NULL,
 [termCode] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pyd_reconcile] [bit] NULL,
-[PayScheduleId] [int] NULL CONSTRAINT [DF__paydetail__PaySc__5E1F5334] DEFAULT ((0))
+[PayScheduleId] [int] NULL CONSTRAINT [DF__paydetail__PaySc__5E1F5334] DEFAULT ((0)),
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__paydetail__INS_T__67941269] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1638,6 +1639,8 @@ GO
 CREATE NONCLUSTERED INDEX [ix_pd_type_mov_lgh_id_amt] ON [dbo].[paydetail] ([asgn_type], [mov_number], [lgh_number], [asgn_id], [pyd_amount]) WITH (FILLFACTOR=80) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Paydetail_timestamp] ON [dbo].[paydetail] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [paydetail_INS_TIMESTAMP] ON [dbo].[paydetail] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [IDX_paydetail_ivd_number] ON [dbo].[paydetail] ([ivd_number]) INCLUDE ([pyd_branch], [pyd_branch_override]) ON [PRIMARY]
 GO

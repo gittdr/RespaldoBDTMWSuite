@@ -269,7 +269,8 @@ CREATE TABLE [dbo].[legheader]
 [lgh_car_accessorial_codes] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [lgh_car_accessorial_rates] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [lgh_autoloadmaxgvw] [float] NULL,
-[lgh_op_code] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[lgh_op_code] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__legheader__INS_T__5945F312] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2579,6 +2580,8 @@ BEGIN
 /*dclemens 2017-01-27 SPLIT05 END*/
 GO
 ALTER TABLE [dbo].[legheader] ADD CONSTRAINT [pk_legheader_lgh_number] PRIMARY KEY NONCLUSTERED ([lgh_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [legheader_INS_TIMESTAMP] ON [dbo].[legheader] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [d_lgh_active_class1] ON [dbo].[legheader] ([lgh_active], [lgh_class1]) ON [PRIMARY]
 GO

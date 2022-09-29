@@ -216,7 +216,8 @@ CREATE TABLE [dbo].[trailerprofile]
 [trl_rfid_tag] [varchar] (24) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [trl_carrier] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [OriginDestinationOption] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[trl_ams_type] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[trl_ams_type] [varchar] (12) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__trailerpr__INS_T__7D835388] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1125,6 +1126,8 @@ GO
 ALTER TABLE [dbo].[trailerprofile] ADD CONSTRAINT [trl_ckmcommtype] CHECK (([dbo].[CheckLabel]([trl_mcommType],'MCommSystem',(1))=(1)))
 GO
 ALTER TABLE [dbo].[trailerprofile] ADD CONSTRAINT [pk_trailerprofile] PRIMARY KEY CLUSTERED ([trl_id]) WITH (FILLFACTOR=100) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [trailerprofile_INS_TIMESTAMP] ON [dbo].[trailerprofile] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Trailerprofile_timestamp] ON [dbo].[trailerprofile] ([timestamp]) ON [PRIMARY]
 GO

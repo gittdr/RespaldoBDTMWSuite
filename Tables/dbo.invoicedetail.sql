@@ -144,7 +144,8 @@ CREATE TABLE [dbo].[invoicedetail]
 [cmd_NMFC_class] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cmd_NMFC_rate_class] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [deficit_row] [int] NULL,
-[ivd_billdate] [datetime] NULL
+[ivd_billdate] [datetime] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__invoicede__INS_T__56698667] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2004,6 +2005,8 @@ GO
 ALTER TABLE [dbo].[invoicedetail] ADD CONSTRAINT [pk_ivd_number] PRIMARY KEY CLUSTERED ([ivd_number]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_Invoicedetail_timestamp] ON [dbo].[invoicedetail] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [invoicedetail_INS_TIMESTAMP] ON [dbo].[invoicedetail] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_ivd_allocated_ivd_number] ON [dbo].[invoicedetail] ([ivd_allocated_ivd_number]) ON [PRIMARY]
 GO

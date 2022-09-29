@@ -11,10 +11,14 @@ CREATE TABLE [dbo].[order_services]
 [pay_rate] [money] NULL,
 [comment] [varchar] (250) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [create_userid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_order_services_create_userid] DEFAULT (user_name()),
-[create_date] [datetime] NOT NULL CONSTRAINT [DF_order_services_create_date] DEFAULT (getdate())
+[create_date] [datetime] NOT NULL CONSTRAINT [DF_order_services_create_date] DEFAULT (getdate()),
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__order_ser__INS_T__62CF5D4C] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[order_services] ADD CONSTRAINT [PK_order_services] PRIMARY KEY NONCLUSTERED ([mov_number], [ord_hdrnumber], [stp_number], [fgt_number], [svc_code]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [order_services_INS_TIMESTAMP] ON [dbo].[order_services] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ord_services_order] ON [dbo].[order_services] ([ord_hdrnumber]) ON [PRIMARY]
 GO

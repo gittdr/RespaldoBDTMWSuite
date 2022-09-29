@@ -74,10 +74,13 @@ CREATE TABLE [dbo].[SPILL]
 [spl_date3] [datetime] NULL,
 [spl_date4] [datetime] NULL,
 [spl_date5] [datetime] NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__SPILL__INS_TIMES__7211A0DC] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_SPILL_timestamp] ON [dbo].[SPILL] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [SPILL_INS_TIMESTAMP] ON [dbo].[SPILL] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_splID] ON [dbo].[SPILL] ([spl_ID]) ON [PRIMARY]
 GO

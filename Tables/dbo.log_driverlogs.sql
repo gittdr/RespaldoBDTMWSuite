@@ -17,7 +17,9 @@ CREATE TABLE [dbo].[log_driverlogs]
 [sixty_seventy_hr_rule] [float] NULL,
 [last_avail_hrs_recalc] [datetime] NULL,
 [log_driverlog_ID] [int] NOT NULL IDENTITY(1, 1),
-[skip_trigger] [bit] NULL
+[skip_trigger] [bit] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__log_drive__INS_T__5B2E3B84] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -210,6 +212,8 @@ CLOSE MPPCURSOR
 DEALLOCATE MPPCURSOR
 
 
+GO
+CREATE NONCLUSTERED INDEX [log_driverlogs_INS_TIMESTAMP] ON [dbo].[log_driverlogs] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE CLUSTERED INDEX [driver_logs_ix] ON [dbo].[log_driverlogs] ([mpp_id], [log_date]) ON [PRIMARY]
 GO

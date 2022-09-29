@@ -16,10 +16,13 @@ CREATE TABLE [dbo].[truckstops]
 [ts_company] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [df_truckstops_ts_company] DEFAULT ('UNK'),
 [ts_fax_number] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ts_email_address] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ts_rebate_percentage] [decimal] (7, 4) NOT NULL CONSTRAINT [ts_rebate_percentage] DEFAULT (100.0000)
+[ts_rebate_percentage] [decimal] (7, 4) NOT NULL CONSTRAINT [ts_rebate_percentage] DEFAULT (100.0000),
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__truckstop__INS_T__7F6B9BFA] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[truckstops] ADD CONSTRAINT [pk_truckstops] PRIMARY KEY CLUSTERED ([ts_code]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [truckstops_INS_TIMESTAMP] ON [dbo].[truckstops] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[truckstops] TO [public]
 GO

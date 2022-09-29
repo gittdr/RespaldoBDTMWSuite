@@ -64,12 +64,15 @@ CREATE TABLE [dbo].[INJURY]
 [inj_date3] [datetime] NULL,
 [inj_date4] [datetime] NULL,
 [inj_date5] [datetime] NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__INJURY__INS_TIME__5575622E] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_INJURY_timestamp] ON [dbo].[INJURY] ([dw_timestamp]) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_injID] ON [dbo].[INJURY] ([inj_ID]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [INJURY_INS_TIMESTAMP] ON [dbo].[INJURY] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_srpseq] ON [dbo].[INJURY] ([srp_ID], [inj_sequence]) ON [PRIMARY]
 GO

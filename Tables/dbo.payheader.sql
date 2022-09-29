@@ -22,7 +22,8 @@ CREATE TABLE [dbo].[payheader]
 [payee_invoice_number] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [payee_invoice_date] [datetime] NULL,
 [pyh_lgh_number] [int] NULL,
-[termCode] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[termCode] [varchar] (8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__payheader__INS_T__688836A2] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -768,6 +769,8 @@ end
 
 GO
 CREATE NONCLUSTERED INDEX [pyh_pk_typeiddate] ON [dbo].[payheader] ([asgn_type], [asgn_id], [pyh_payperiod], [pyh_lgh_number]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [payheader_INS_TIMESTAMP] ON [dbo].[payheader] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [sk_pyh_payprd] ON [dbo].[payheader] ([pyh_payperiod], [pyh_payto]) ON [PRIMARY]
 GO

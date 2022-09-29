@@ -16,7 +16,8 @@ CREATE TABLE [dbo].[tractoraccesories]
 [tractoraccessory_id] [int] NOT NULL IDENTITY(1, 1),
 [tca_field] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [tca_value] [decimal] (10, 2) NULL,
-[tca_units] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[tca_units] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__tractorac__INS_T__7B9B0B16] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -142,6 +143,8 @@ end
 
 GO
 ALTER TABLE [dbo].[tractoraccesories] ADD CONSTRAINT [pk_tractoraccesories] PRIMARY KEY CLUSTERED ([tractoraccessory_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [tractoraccesories_INS_TIMESTAMP] ON [dbo].[tractoraccesories] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [pk_tca_type] ON [dbo].[tractoraccesories] ([tca_type], [tca_tractor], [tca_source]) ON [PRIMARY]
 GO

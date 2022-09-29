@@ -38,7 +38,8 @@ CREATE TABLE [dbo].[ttsusers]
 [settle_with_invoice] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF__ttsusers__settle__0824ACD3] DEFAULT ('GI-DEFAULT'),
 [settle_with_invoice_ivh_status] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF__ttsusers__settle__0918D10C] DEFAULT ('GI-DEFAULT'),
 [usr_edi210print] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[usr_DRFolder] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[usr_DRFolder] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__ttsusers__INS_TI__005FC033] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -149,6 +150,8 @@ BEGIN
 END
 
 
+GO
+CREATE NONCLUSTERED INDEX [ttsusers_INS_TIMESTAMP] ON [dbo].[ttsusers] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_ttsusers_timestamp] ON [dbo].[ttsusers] ([timestamp]) ON [PRIMARY]
 GO

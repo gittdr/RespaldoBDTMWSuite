@@ -19,7 +19,9 @@ CREATE TABLE [dbo].[Thirdpartyassignment]
 [ThirdPartyType3] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ThirdPartyType4] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [PayScheduleId] [int] NULL,
-[tpa_issellingagent] [bit] NULL
+[tpa_issellingagent] [bit] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__Thirdpart__INS_T__79B2C2A4] DEFAULT (getdate()),
+[DW_TIMESTAMP] [timestamp] NOT NULL
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -56,6 +58,8 @@ BEGIN
 END
 GO
 ALTER TABLE [dbo].[Thirdpartyassignment] ADD CONSTRAINT [pk_tpr_number] PRIMARY KEY CLUSTERED ([tpr_number]) WITH (FILLFACTOR=100) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [Thirdpartyassignment_INS_TIMESTAMP] ON [dbo].[Thirdpartyassignment] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_thirdpartyassignment_lgh_number] ON [dbo].[Thirdpartyassignment] ([lgh_number]) ON [PRIMARY]
 GO

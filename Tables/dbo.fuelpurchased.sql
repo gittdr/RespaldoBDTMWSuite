@@ -47,7 +47,8 @@ CREATE TABLE [dbo].[fuelpurchased]
 [fp_geotabodometer] [int] NULL,
 [fp_kmsfromlastpurchase] [int] NULL,
 [fp_rendimiento] [float] NULL,
-[fp_tanklevel] [float] NULL
+[fp_tanklevel] [float] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__fuelpurch__INS_T__538D19BC] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[fuelpurchased] ADD CONSTRAINT [pk_fuelpurchased] PRIMARY KEY CLUSTERED ([fp_id], [fp_sequence]) ON [PRIMARY]
@@ -57,6 +58,8 @@ GO
 CREATE NONCLUSTERED INDEX [idx_FuelPurchased_fp_date] ON [dbo].[fuelpurchased] ([fp_date]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_invno_fueltype] ON [dbo].[fuelpurchased] ([fp_invoice_no], [fp_fueltype], [fp_purchcode]) WITH (FILLFACTOR=90) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [fuelpurchased_INS_TIMESTAMP] ON [dbo].[fuelpurchased] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_fuelpurchased_timestamp] ON [dbo].[fuelpurchased] ([timestamp]) ON [PRIMARY]
 GO

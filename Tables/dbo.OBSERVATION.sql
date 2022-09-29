@@ -47,10 +47,13 @@ CREATE TABLE [dbo].[OBSERVATION]
 [obs_date3] [datetime] NULL,
 [obs_date4] [datetime] NULL,
 [obs_date5] [datetime] NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__OBSERVATI__INS_T__60E714DA] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_OBSERVATION_timestamp] ON [dbo].[OBSERVATION] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [OBSERVATION_INS_TIMESTAMP] ON [dbo].[OBSERVATION] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_obsID] ON [dbo].[OBSERVATION] ([obs_ID]) ON [PRIMARY]
 GO

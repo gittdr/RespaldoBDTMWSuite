@@ -31,7 +31,8 @@ CREATE TABLE [dbo].[labelfile]
 [label_extrastring4] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [label_extrastring5] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [label_extrastring6] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[global_label] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [lf_global_default] DEFAULT ('Y')
+[global_label] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [lf_global_default] DEFAULT ('Y'),
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__labelfile__INS_T__5851CED9] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -601,6 +602,8 @@ GO
 ALTER TABLE [dbo].[labelfile] ADD CONSTRAINT [pkey_label] PRIMARY KEY CLUSTERED ([labeldefinition], [abbr]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_abbr] ON [dbo].[labelfile] ([abbr]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [labelfile_INS_TIMESTAMP] ON [dbo].[labelfile] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [pk_label] ON [dbo].[labelfile] ([labeldefinition], [abbr]) ON [PRIMARY]
 GO

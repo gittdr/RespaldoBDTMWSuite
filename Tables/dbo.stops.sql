@@ -170,7 +170,8 @@ CREATE TABLE [dbo].[stops]
 [trl_id2] [char] (13) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [trl_id3] [char] (13) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [stp_optimizationdate] [datetime] NULL,
-[stp_app_eqcodes] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[stp_app_eqcodes] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__stops__INS_TIMES__73F9E94E] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2906,6 +2907,8 @@ GO
 ALTER TABLE [dbo].[stops] ADD CONSTRAINT [pk_stp_number] PRIMARY KEY CLUSTERED ([stp_number]) WITH (FILLFACTOR=90) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_cmparrival] ON [dbo].[stops] ([cmp_id], [stp_arrivaldate]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [stops_INS_TIMESTAMP] ON [dbo].[stops] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_leghdrnum] ON [dbo].[stops] ([lgh_number], [ord_hdrnumber]) ON [PRIMARY]
 GO

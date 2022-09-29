@@ -4,7 +4,8 @@ CREATE TABLE [dbo].[regionheader]
 [rgh_type] [int] NOT NULL,
 [rgh_id] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [rgh_name] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[timestamp] [timestamp] NULL
+[timestamp] [timestamp] NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__regionhea__INS_T__6E410FF8] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -40,6 +41,8 @@ BEGIN
    END
 END
 	
+GO
+CREATE NONCLUSTERED INDEX [regionheader_INS_TIMESTAMP] ON [dbo].[regionheader] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [rgh_idx2] ON [dbo].[regionheader] ([rgh_id], [rgh_type]) ON [PRIMARY]
 GO

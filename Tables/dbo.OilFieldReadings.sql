@@ -45,7 +45,8 @@ CREATE TABLE [dbo].[OilFieldReadings]
 [MeterFactor] [decimal] (10, 4) NULL,
 [IsTopOff] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [dk_OilFieldReadings_IsTopOff] DEFAULT ('N'),
 [Comments] [varchar] (2000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__OilFieldR__INS_T__61DB3913] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[OilFieldReadings] ADD CONSTRAINT [pk_OilFieldReadings] PRIMARY KEY CLUSTERED ([SN]) ON [PRIMARY]
@@ -59,6 +60,8 @@ GO
 CREATE NONCLUSTERED INDEX [dk_OilFieldReadings_fgt_number_date_tank] ON [dbo].[OilFieldReadings] ([fgt_number], [inv_readingdate], [inv_tankID]) INCLUDE ([inv_value], [cmp_id]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_OilFieldReadings_fgt_number_tank_date] ON [dbo].[OilFieldReadings] ([fgt_number], [inv_tankID], [inv_readingdate]) INCLUDE ([inv_value], [cmp_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [OilFieldReadings_INS_TIMESTAMP] ON [dbo].[OilFieldReadings] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_OilFieldReadings_readingdate] ON [dbo].[OilFieldReadings] ([inv_readingdate]) INCLUDE ([cmp_id], [inv_tankID], [inv_value], [ofr_topgaugemeasurement], [ofr_bottomgaugemeasurement]) ON [PRIMARY]
 GO

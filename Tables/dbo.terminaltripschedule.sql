@@ -13,10 +13,13 @@ CREATE TABLE [dbo].[terminaltripschedule]
 [saturday_serv] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__terminalt__satur__389801A2] DEFAULT ('N'),
 [sunday_serv] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__terminalt__sunda__398C25DB] DEFAULT ('N'),
 [is_active] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF__terminalt__is_ac__3A804A14] DEFAULT ('Y'),
-[rowchgts] [timestamp] NOT NULL
+[rowchgts] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__terminalt__INS_T__77CA7A32] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[terminaltripschedule] ADD CONSTRAINT [PK__terminal__3213E83FD425A40C] PRIMARY KEY CLUSTERED ([id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [terminaltripschedule_INS_TIMESTAMP] ON [dbo].[terminaltripschedule] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 GRANT DELETE ON  [dbo].[terminaltripschedule] TO [public]
 GO

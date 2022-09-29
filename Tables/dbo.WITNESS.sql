@@ -44,10 +44,13 @@ CREATE TABLE [dbo].[WITNESS]
 [wit_date3] [datetime] NULL,
 [wit_date4] [datetime] NULL,
 [wit_date5] [datetime] NULL,
-[dw_timestamp] [timestamp] NOT NULL
+[dw_timestamp] [timestamp] NOT NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__WITNESS__INS_TIM__024808A5] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [idx_WITNESS_timestamp] ON [dbo].[WITNESS] ([dw_timestamp]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [WITNESS_INS_TIMESTAMP] ON [dbo].[WITNESS] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [INX_srpseq] ON [dbo].[WITNESS] ([srp_ID], [wit_Sequence]) ON [PRIMARY]
 GO

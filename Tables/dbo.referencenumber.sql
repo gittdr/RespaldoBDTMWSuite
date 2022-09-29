@@ -13,7 +13,8 @@ CREATE TABLE [dbo].[referencenumber]
 [last_updateby] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL CONSTRAINT [DF_REF_last_updateby] DEFAULT (case when charindex('\',suser_sname())>(0) then left(substring(suser_sname(),charindex('\',suser_sname())+(1),len(suser_sname())),(20)) else left(suser_sname(),(20)) end),
 [last_updatedate] [datetime] NULL CONSTRAINT [DF_REF_last_updatedate] DEFAULT (getdate()),
 [ref_id] [int] NOT NULL IDENTITY(1, 1),
-[AutoRefNumberOrigin] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[AutoRefNumberOrigin] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[INS_TIMESTAMP] [datetime2] (0) NOT NULL CONSTRAINT [DF__reference__INS_T__6D4CEBBF] DEFAULT (getdate())
 ) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
@@ -86,6 +87,8 @@ select @now = getdate()
 	
 GO
 ALTER TABLE [dbo].[referencenumber] ADD CONSTRAINT [pk_refnum] PRIMARY KEY CLUSTERED ([ref_id]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [referencenumber_INS_TIMESTAMP] ON [dbo].[referencenumber] ([INS_TIMESTAMP] DESC) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [dk_ord_hdrnumber] ON [dbo].[referencenumber] ([ord_hdrnumber], [ref_type], [ref_number], [ref_sequence]) WITH (FILLFACTOR=80) ON [PRIMARY]
 GO
