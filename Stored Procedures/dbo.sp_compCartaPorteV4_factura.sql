@@ -230,7 +230,6 @@ Select
 
 
 --SECCION RECEPTOR (1:1)
-
     '02'                                                                                                              --1 Tipo de Registro   (R)
 																		       +'|'+ 
     isnull((select replace(cmp_id,'|','') from company where cmp_id = invoiceheader.ivh_billto),'')                     --2 ID Cliente  (R)
@@ -376,7 +375,7 @@ Select
 																				+'|'+
 	isnull(replace(TT2_cht_description,'|',''),'')												--8.descripcion
 																		        +'|'+ 
-	casT(isnull(cast(TT2_rate as decimal(8,4)),'0')  as varchar(20))							--9.valor unitario
+	casT(isnull(cast(TT2_rate as decimal(8,2)),'0')  as varchar(20))							--9.valor unitario
 																				+'|'+ 
 	casT(isnull(cast(TT2_ivd_charge as decimal(8,2)),'0')  as varchar(20))	                    --10. importe                                                              
 																		        +'|'+ 
