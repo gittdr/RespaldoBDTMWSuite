@@ -108,9 +108,9 @@ TT2_remark varchar(254),TT2_cantidad float, TT2_rate dec(10,2),TT2_unidadSat var
 
 select @totaliva = Round(@totaliva,2,1)
 -- obtengo la cantidad de conceptos
-
+print @totaliva
 select  @cantidadConceptos = count(*) from #conceptosfactura2
-
+print '116'
 Select
 ---- INICIO DE DOCTO POR LOTES(0,1)
 --'0000'																												--1 Tipo Registro
@@ -143,31 +143,31 @@ Select
 	isnull(replace(format(GETDATE(),'yyyy/MM/dd HH:mm:ss'),'|',''),'')                                               --5 Fecha formato 24hrs (R)     
 																	           +'|'+     
 																		      
-    cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)+@totalconceptos) as varchar(20))			         --6 Subtotal (R) 
+    --jrcast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)+@totalconceptos) as varchar(20))			         --6 Subtotal (R) 
 
 	                                                                           +'|'+    
     --cast(convert(decimal (10,2),isnull((orderheader.ord_totalcharge)*.16,0)) as varchar(20)) 						 --7 Total imp trasladado
-	cast(convert(decimal (10,2),isnull(round(((invoiceheader.ivh_charge)*.16)+@totaliva,2,1) ,0)) as varchar(20))
+	--jrcast(convert(decimal (10,2),isnull(round(((invoiceheader.ivh_charge)*.16)+@totaliva,2,1) ,0)) as varchar(20))
 																		       +'|'+    
-    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)) as varchar(20)) 							  --8 Total imp retenido
+    --jrcast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)) as varchar(20)) 							  --8 Total imp retenido
                                                                                +'|'+   
 	''																										     	 --9 Descuentos																		     
 																		       +'|'+     
-   cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)+@totalconceptos,0))+ convert(decimal (10,2)
-   ,isnull(round(((invoiceheader.ivh_charge)*.16)+@totaliva,2,1),0)) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*.04,0)) as varchar(20))                                                        --10 Total
-																		
+   --jrcast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)+@totalconceptos,0))+ convert(decimal (10,2)
+   --jr,isnull(round(((invoiceheader.ivh_charge)*.16)+@totaliva,2,1),0)) - convert(decimal (10,2),
+   --jrisnull((invoiceheader.ivh_charge)*.04,0)) as varchar(20))                                                        --10 Total
+	
 																		+'|'+     
-    REPLACE(REPLACE(dbo.NumeroEnLetra(ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
-	convert(decimal (10,2),isnull(  round((invoiceheader.ivh_charge)*.16,2,1),0  )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)))), 0, 1))	 + 
-	(CASE isnull(invoiceheader.ivh_currency,'M.N') WHEN 'MX$' THEN ' PESOS' ELSE ' DOLARES' END) + ' ' +
-	CAST((((ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
-	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*.16,2,1),0    )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
-	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*.16,2,1),0)+@totaliva) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*.04,0)),0))), 0, 1)) AS varchar) 
-    + ' /100 ' + (CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN 'M.N.' ELSE 'DLS' END), '0.', ''), '	', '')		 
+    --jrREPLACE(REPLACE(dbo.NumeroEnLetra(ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
+	--jrconvert(decimal (10,2),isnull(  round((invoiceheader.ivh_charge)*.16,2,1),0  )+@totaliva) - 
+	--jrconvert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)))), 0, 1))	 + 
+	--jr(CASE isnull(invoiceheader.ivh_currency,'M.N') WHEN 'MX$' THEN ' PESOS' ELSE ' DOLARES' END) + ' ' +
+	--jrCAST((((ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
+	--jrconvert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*.16,2,1),0    )+@totaliva) - 
+	--jrconvert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
+	--jrconvert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*.16,2,1),0)+@totaliva) - convert(decimal (10,2),
+   --jrisnull((invoiceheader.ivh_charge)*.04,0)),0))), 0, 1)) AS varchar) 
+    --jr+ ' /100 ' + (CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN 'M.N.' ELSE 'DLS' END), '0.', ''), '	', '')		 
 	                                                                                                                 --11 Total con letra	
 	    																       +'|'+     
     isnull(replace(billcmp.cmp_misc3,'|',''), '99')                                                         	     --12 Forma de Pago
