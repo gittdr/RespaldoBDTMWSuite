@@ -108,9 +108,8 @@ TT2_remark varchar(254),TT2_cantidad float, TT2_rate dec(10,2),TT2_unidadSat var
 
 select @totaliva = Round(@totaliva,2,1)
 -- obtengo la cantidad de conceptos
-print @totaliva
+
 select  @cantidadConceptos = count(*) from #conceptosfactura2
-print '116'
 Select
 ---- INICIO DE DOCTO POR LOTES(0,1)
 --'0000'																												--1 Tipo Registro
@@ -131,7 +130,7 @@ Select
 
 																					+'\n'+
 --SECCION HEADER (1:1)
-
+/*
     '01'                                                                                                             --1 Tipo de Registro   (R)
 																		       +'|'+ 
     'TDRZP' + cast(invoiceheader.ivh_hdrnumber  as varchar(20))                                                      --2 ID comrpobante  (R)
@@ -228,7 +227,7 @@ Select
   
                                                                                + '\n' +
 
-
+*/
 --SECCION RECEPTOR (1:1)
     '02'                                                                                                              --1 Tipo de Registro   (R)
 																		       +'|'+ 
