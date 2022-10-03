@@ -130,7 +130,7 @@ Select
 
 																					+'\n'+
 --SECCION HEADER (1:1)
-/*
+
     '01'                                                                                                             --1 Tipo de Registro   (R)
 																		       +'|'+ 
     'TDRZP' + cast(invoiceheader.ivh_hdrnumber  as varchar(20))                                                      --2 ID comrpobante  (R)
@@ -227,7 +227,7 @@ Select
   
                                                                                + '\n' +
 
-*/
+
 --SECCION RECEPTOR (1:1)
     '02'                                                                                                              --1 Tipo de Registro   (R)
 																		       +'|'+ 
@@ -279,7 +279,7 @@ Select
                                                                                + '\n' +
 
 ----SECCION 04 (1:N)
-
+/*
     '04'                                                                                                             --1 Tipo de Registro   (R)
 																		       +'|'+ 
     '1'                                                                                                              --2 Consecutivo  (R)
@@ -348,7 +348,7 @@ Select
 																	           +'|'+  
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
-                                                                               + '\n' 																			   
+*/                                                                               + '\n' 																			   
 -- JR inicio se agregan los conceptos de la factura
 +
  CASE when @cantidadConceptos = '0' then
