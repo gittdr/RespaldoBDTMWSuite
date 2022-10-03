@@ -279,7 +279,7 @@ Select
                                                                                + '\n' +
 
 ----SECCION 04 (1:N)
-/*
+
     '04'                                                                                                             --1 Tipo de Registro   (R)
 																		       +'|'+ 
     '1'                                                                                                              --2 Consecutivo  (R)
@@ -348,8 +348,9 @@ Select
 																	           +'|'+  
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
-*/                                                                               + '\n' 																			   
+                                                                               + '\n' 																			   
 -- JR inicio se agregan los conceptos de la factura
+
 +
  CASE when @cantidadConceptos = '0' then
  ''
@@ -428,8 +429,8 @@ Select
 	),'ºçº' ,'\n' )
 	end--case
 -- fin de los conceptos de la factura jr
-+
 
++
 
 ----SECCION 06 Impuesto trasladado (1:1)
 
@@ -626,9 +627,8 @@ replace( (STUFF((
 
 
 	
-								
-                                                                                 +
-
+							
+    +
 --SECCION MERCANCÍAS (1:1)
 
     'CP2_MER'                                                                                                                                                  --1 Tipo de Registro
@@ -736,7 +736,6 @@ replace( (STUFF((
 	FOR XML PATH('')),1,0,'')
 	),'ºçº' , '\n' )
 						
-
 
 
 --SECCION CANTIDAD TRANSPORTA (0:N)
@@ -1161,4 +1160,5 @@ left join trailerprofile trl2  on invoiceheader.ivh_trailer2       = trl2.trl_id
 left join company billcmp      on orderheader.ord_billto          = billcmp.cmp_id
 --CLAUSULA WHERE EL numero de invoice SEA IGUAL AL PARAMETRO DEL SP
 where ivh_hdrnumber = @num_factura
+
 GO
