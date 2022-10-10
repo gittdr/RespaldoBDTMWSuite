@@ -7,9 +7,9 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[sp_sl_Pilgrims_Embarque] (@ruta varchar(50),@origen varchar(50),@destino varchar(50),@tipoUnidad varchar(50),@proveedor varchar(50),@plantaPago varchar(50),@fecha varchar(50),@comentarios varchar(50),
+CREATE PROCEDURE [dbo].[sp_sl_Pilgrims_Embarque] (@ruta varchar(50),@origen varchar(100),@destino varchar(100),@tipoUnidad varchar(50),@proveedor varchar(50),@plantaPago varchar(50),@fecha varchar(50),@comentarios varchar(50),
 													@remolque varchar(50),@tipoViaje varchar(50),@peso varchar(50),@unidadPiezas varchar(50),@CantidadPiezas varchar(50),@Tractor varchar(50),@remolques varchar(50), @accion int,@idEmbarque varchar(50),
-													 @rutaNombre varchar(50), @distribuidor varchar(50),@idOrigen varchar(50),@idDestino varchar(50), @dolly varchar(50), @sellos varchar(50),
+													 @rutaNombre varchar(50), @distribuidor varchar(50),@idOrigen varchar(100),@idDestino varchar(100), @dolly varchar(50), @sellos varchar(50),
 													  @operador varchar(50), @sellos2 varchar(50), @valePlastico varchar(50), @flejePlastico varchar(50), @valePlastico2 varchar(50), @flejePlastico2 varchar(50) )
 	-- Add the parameters for the stored procedure here
 	

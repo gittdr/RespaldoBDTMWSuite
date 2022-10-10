@@ -50,7 +50,7 @@ from [dbo].[sl_Pilgrims_Rutas] r
 				--r.ruta not in (Select oh.ref_number 
 				--						from [dbo].[referencenumber] oh where oh.ref_type = 'BL#' and oh.ord_hdrnumber in (select ord_hdrnumber from orderheader where ord_billto='sayer' and ord_refnum <> '' ))
 				--and 
-				cast(cast(r.ruta as int) as varchar) not in (Select oh.ord_refnum from orderheader oh where oh.ord_billto  in (select distinct ord_billto from orderheader where ord_billto like '%SAY%') and oh.ord_refnum <> '')
+				cast(cast(r.ruta as int) as varchar) not in (Select oh.ord_refnum from orderheader oh where oh.ord_billto  in (select distinct ord_billto from orderheader where ord_billto like '%SAY%' or ord_billto = 'PISA' or ord_billto = 'WALMART') and oh.ord_refnum <> '')
 				--and r.Operador <> ''
 				--and (select count(*) from expiration where exp_id in (select trc_number from tractorprofile where trc_driver = r.Operador) and exp_completed <> 'Y') < 1
 
@@ -111,7 +111,7 @@ BEGIN
 				--and  r.ruta not in (Select oh.ref_number 
 				--						from [dbo].[referencenumber] oh where oh.ref_type = 'SID' and oh.ord_hdrnumber in (select ord_hdrnumber from orderheader where ord_billto='pilgrims' and ord_refnum <> '' ) )
 				
-				cast(cast(r.ruta as int) as varchar) not in (Select oh.ord_refnum from orderheader oh where oh.ord_billto  in (select distinct ord_billto from orderheader where ord_billto like '%SAY%') and oh.ord_refnum <> '')
+				cast(cast(r.ruta as int) as varchar) not in (Select oh.ord_refnum from orderheader oh where oh.ord_billto  in (select distinct ord_billto from orderheader where ord_billto like '%SAY%' or ord_billto = 'PISA' or ord_billto = 'WALMART') and oh.ord_refnum <> '')
 				--and em.Operador <> ''
 				--and (select count(*) from expiration where exp_id in (select trc_number from tractorprofile where trc_driver = em.Operador) and exp_completed <> 'Y') < 1
 		

@@ -27,10 +27,28 @@ CREATE proc [dbo].[sp_compCartaPortev2_factura]  @invoiceNumber varchar(20)
 as
 declare @lgh_hdrnumber varchar(20),
 @ord_hdrnumber int,
-@num_factura int
+@num_factura int,
+@ivh_tipomoneda varchar(3),
+@v_factoriva dec(2,2),
+@v_factorret dec(2,2)
+
 select @num_factura = cast(@invoiceNumber as int)
 
 select @ord_hdrnumber = ord_hdrnumber from invoiceheader where ivh_hdrnumber = @num_factura
+
+--obtengo el tipo de moneda
+select @ivh_tipomoneda = ivh_currency from invoiceheader where ivh_hdrnumber = @num_factura
+
+IF @ivh_tipomoneda = 'MX$'
+	begin
+		select @v_factoriva = 0.16
+		select @v_factorret = 0.04
+	end
+ELSE
+begin
+		select @v_factoriva = 0.0
+		select @v_factorret = 0.0
+	end
 
 -- obtengo el segmento que se encuentra con estatus STD
 
@@ -129,26 +147,26 @@ Select
 
 	                                                                           +'|'+    
     --cast(convert(decimal (10,2),isnull((orderheader.ord_totalcharge)*.16,0)) as varchar(20)) 						     --7 Total imp trasladado
-	cast(convert(decimal (10,2),isnull(round(((invoiceheader.ivh_charge)*.16)+@totaliva,2,1) ,0)) as varchar(20))
+	cast(convert(decimal (10,2),isnull(round(((invoiceheader.ivh_charge)*@v_factoriva)+@totaliva,2,1) ,0)) as varchar(20))
 																		       +'|'+    
-    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)) as varchar(20)) 							  --8 Total imp retenido
+    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)) as varchar(20)) 							  --8 Total imp retenido
                                                                                +'|'+   
 	''																										     	 --9 Descuentos																		     
 																		       +'|'+     
    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)+@totalconceptos,0))+ convert(decimal (10,2)
-   ,isnull(round(((invoiceheader.ivh_charge)*.16)+@totaliva,2,1),0)) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*.04,0)) as varchar(20))                                                        --10 Total
+   ,isnull(round(((invoiceheader.ivh_charge)*@v_factoriva)+@totaliva,2,1),0)) - convert(decimal (10,2),
+   isnull((invoiceheader.ivh_charge)*@v_factorret,0)) as varchar(20))                                                        --10 Total
 																		
 																		+'|'+     
     REPLACE(REPLACE(dbo.NumeroEnLetra(ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
-	convert(decimal (10,2),isnull(  round((invoiceheader.ivh_charge)*.16,2,1),0  )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)))), 0, 1))	 + 
+	convert(decimal (10,2),isnull(  round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0  )+@totaliva) - 
+	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)))), 0, 1))	 + 
 	(CASE isnull(invoiceheader.ivh_currency,'M.N') WHEN 'MX$' THEN ' PESOS' ELSE ' DOLARES' END) + ' ' +
 	CAST((((ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
-	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*.16,2,1),0    )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*.04,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
-	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*.16,2,1),0)+@totaliva) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*.04,0)),0))), 0, 1)) AS varchar) 
+	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0    )+@totaliva) - 
+	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
+	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0)+@totaliva) - convert(decimal (10,2),
+   isnull((invoiceheader.ivh_charge)*@v_factorret,0)),0))), 0, 1)) AS varchar) 
     + ' /100 ' + (CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN 'M.N.' ELSE 'DLS' END), '0.', ''), '	', '')		 
 	                                                                                                                 --11 Total con letra	
 	    																       +'|'+     
@@ -292,9 +310,9 @@ Select
 																	           +'|'+    
     'Tasa'                                                                                                          --4 Tipo (R)   
 																	           +'|'+     
-    '0.160000'                                                                                                      --5 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.16000' else '0.0000'end                   --5 % Impuesto (R)     
 																	           +'|'+     
-    cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*.16),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
+    cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
 																	           +'|'+  
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
@@ -310,9 +328,9 @@ Select
 																	           +'|'+    
     'Tasa'                                                                                                          --4 Tipo (R)   
 																	           +'|'+     
-    '0.040000'                                                                                                      --5 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.040000' else '0.0000'end                    --5 % Impuesto (R)     
 																	           +'|'+     
-    cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge*.04,0)) as varchar(20))                          --6 Monto Impuesto  (R)     
+    cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge*@v_factorret,0)) as varchar(20))                          --6 Monto Impuesto  (R)     
 																	           +'|'+  
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
@@ -406,9 +424,9 @@ Select
 																	           +'|'+    
     'Tasa'                                                                                                          --3 Tipo (R)   
 																	           +'|'+     
-    '0.160000'                                                                                                      --4 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.160000' else '0.0000'end              --4 % Impuesto (R)     
 																	           +'|'+     
-      cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*.16),2,1)+@totaliva,0)) as varchar(20))            --5 Monto Impuesto  (R)     
+      cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1)+@totaliva,0)) as varchar(20))            --5 Monto Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' +
 ----SECCION 07 Impuesto Retenido (1:1)
@@ -417,9 +435,9 @@ Select
 																	           +'|'+     
     '002'                                                                                                           --2 Cod Impuesto  (R)     
 																	           +'|'+     
-    '0.040000'                                                                                                      --3 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.040000' else '0.0000'end                               --3 % Impuesto (R)     
 																	           +'|'+     
-     cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge*.04),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
+     cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge*@v_factorret),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' +
 ----SECCION ORDEN
