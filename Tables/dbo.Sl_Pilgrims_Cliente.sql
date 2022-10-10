@@ -1,11 +1,11 @@
 CREATE TABLE [dbo].[Sl_Pilgrims_Cliente]
 (
 [Client_Id] [int] NOT NULL,
-[IdClient] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[IdClient] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [FechaEntregaMin] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [FechaEntregaMax] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Embarque_Id] [int] NULL,
-[ClienteDescripcion] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ClienteDescripcion] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Distancia] [decimal] (18, 2) NULL
 ) ON [PRIMARY]
 GO

@@ -334,6 +334,7 @@ Select
                                                                                + '\n' +
 
 ----SECCION 041 Impuesto trasladado (1:1)
+ case (invoiceheader.ivh_currency) when 'MX$' 	then 
 
     '041'                                                                                                           --1 Tipo de Registro   (R)
 																		       +'|'+ 
@@ -369,7 +370,9 @@ Select
 																	           +'|'+  
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
-                                                                               + '\n' 																			   
+                                                                               + '\n' 		
+	else ''
+	end 
 -- JR inicio se agregan los conceptos de la factura
 
 +
@@ -454,7 +457,7 @@ Select
 +
 
 ----SECCION 06 Impuesto trasladado (1:1)
-
+case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '06'                                                                                                            --1 Tipo de Registro   (R)
 																	           +'|'+     
     '002'                                                                                                           --2 Cod Impuesto  (R)     
@@ -481,7 +484,10 @@ Select
 																	           +'|'+     
      cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge*@v_factorret),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
 																	           +'|'+   
-                                                                               + '\n' +
+                                                                               + '\n' 
+																			   else
+																			   ''
+																			   end +
 ----SECCION ORDEN
 	'08'
 																				+'|'+

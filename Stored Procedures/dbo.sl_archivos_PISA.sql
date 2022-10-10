@@ -11,7 +11,7 @@ BEGIN
 	BEGIN
 				-- aqui se leen los archivos
 			SELECT 'PISA' as Usuario,idEnvio from TESTPISAUPLOAD
-			  where idenvio not in (select narchivo from RCSAYER where usuario = 'PISA')
+			  where idenvio not in (select narchivo from RCSAYER where usuario = 'PISA')  and idenvio = '6422762'
 			  group by idEnvio
 	END
 	ELSE IF(@accion = '2')
@@ -33,7 +33,7 @@ BEGIN
 			SELECT Distinct 'PISA' as Usuario, [idenvio], [rfcvendedora],[razonsocialremitente], [rfccliente], [razonsocialcliente], [secuencia]
 				,LEFT([fechahorallegada],4) +'/'+ RIGHT(LEFT([fechahorallegada],6),2) +'/'+  RIGHT(LEFT([fechahorallegada],8),2)+' '+RIGHT(LEFT([fechahorallegada],11),2)+':'+RIGHT(LEFT([fechahorallegada],13),2)+':'+RIGHT(LEFT([fechahorallegada],15),2) as fechahorallegada
 				,LEFT([fechahorasalida],4) +'/'+ RIGHT(LEFT([fechahorasalida],6),2) +'/'+  RIGHT(LEFT([fechahorasalida],8),2)+' '+RIGHT(LEFT([fechahorasalida],11),2)+':'+RIGHT(LEFT([fechahorasalida],13),2)+':'+RIGHT(LEFT([fechahorasalida],15),2) as fechahorasalida
-				--CAST([fechahorasalida] AS DATE)
+				,[codigopostal2] --CAST([fechahorasalida] AS DATE)
 			 from TESTPISAUPLOAD
 			  where idenvio = @idRuta
 			  
@@ -49,10 +49,10 @@ BEGIN
 	ELSE IF(@accion = '5')
 	BEGIN
 				-- aqui se leen los archivos
-			SELECT numpiezas,claveunidad,claveprodservicio,descripcion,pesoenkg,unidadpeso, secuencia
+			SELECT claveprodservicio,claveunidad, numpiezas,claveunidad,'',descripcion,unidadpeso,'',pesoenkg, secuencia
 			 from TESTPISAUPLOAD
 			  where idenvio = @idRuta
-			  
+			
 	END
 	
 END

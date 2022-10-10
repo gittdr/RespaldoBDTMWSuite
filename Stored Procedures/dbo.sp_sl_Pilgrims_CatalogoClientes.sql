@@ -27,9 +27,9 @@ Select ccc.compania_tmw as origenTMW,
 		r.[Cajas], Cast(r.[CargaTon] as decimal(20,2)) + cast (isnull(r.[CargaTon2],0) as decimal(20,2)) as [CargaTon], r.[clientes],
 		isnull((select top 1 mpp_id from manpowerprofile where mpp_firstname +' '+ mpp_lastname = r.Operador),
 		isnull((select  top 1 mpp_id from manpowerprofile where r.Operador like '%'+' ' +mpp_lastname and mpp_status = 'USE'),
-		(Select idoperador from Sl_pilgrims_Operadores where alias = r.Operador)
+		(Select top 1 idoperador from Sl_pilgrims_Operadores where alias = r.Operador)
 		)) as Operador,
-		isnull((select trl_id FROM trailerprofile where trl_number =  r.Remolque1),(select trl_id FROM trailerprofile where trl_licnum =  r.Remolque1)) as Remolque1,
+		isnull((select top 1 trl_id FROM trailerprofile where trl_number =  r.Remolque1),(select top 1 trl_id FROM trailerprofile where trl_licnum =  r.Remolque1)) as Remolque1,
 		r.Remolque2,r.Dolly,em.tipoViaje as Distancia,em.Fecha as FechaEntregaMax,
 		isnull((select top 1 mpp_tractornumber from manpowerprofile where mpp_firstname +' '+ mpp_lastname = r.Operador),
 		isnull((select  top 1 mpp_tractornumber from manpowerprofile where r.Operador like '%'+' ' +mpp_lastname and mpp_status = 'USE'),
@@ -63,7 +63,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
  
-		Select ccc.compania_tmw  as origenTMW,
+		Select DISTINCT ccc.compania_tmw  as origenTMW,
 		 r.idrutas, r.ruta, r.origen,r.destino,
 		 em.Fecha,
 		 cc.Origen,cc.Destino,cc.compania_tmw, cc.Nombre_TMW,cc.Ciudad_TMW, cc.DistanciaIdaVuelta,cc.TiempoHrs, cc.SalidaDePlanta, cc.LLegadaADestino,cc.TiempoDeRecorrido,
@@ -73,9 +73,9 @@ BEGIN
 		cl.IdClient,cccc.compania_tmw as CompaniaStop,cl.ClienteDescripcion,cl.FechaEntregaMin,cl.FechaEntregaMax,cl.Distancia,ped.Caja,ped.Secuencia,ped.LugarEntrega,ped.Destino,
 		isnull((select top 1 mpp_id from manpowerprofile where mpp_firstname +' '+ mpp_lastname = r.Operador),
 		isnull((select  top 1 mpp_id from manpowerprofile where r.Operador like '%'+' ' +mpp_lastname and mpp_status = 'USE'),
-		(Select idoperador from Sl_pilgrims_Operadores where alias = r.Operador)
+		(Select top 1 idoperador from Sl_pilgrims_Operadores where alias = r.Operador)
 		)) as Operador,
-		isnull((select trl_id FROM trailerprofile where trl_number =  r.Remolque1),(select trl_id FROM trailerprofile where trl_licnum =  r.Remolque1)) as Remolque1,
+		isnull((select top 1 trl_id FROM trailerprofile where trl_number =  r.Remolque1),(select top 1 trl_id FROM trailerprofile where trl_licnum =  r.Remolque1)) as Remolque1,
 		r.Remolque2,r.Dolly,
 		isnull((select top 1 mpp_tractornumber from manpowerprofile where mpp_firstname +' '+ mpp_lastname = r.Operador),
 		isnull((select  top 1 mpp_tractornumber from manpowerprofile where r.Operador like '%'+' ' +mpp_lastname and mpp_status = 'USE'),

@@ -301,7 +301,7 @@ Select
                                                                                + '\n' +
 
 ----SECCION 041 Impuesto trasladado (1:1)
-
+case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '041'                                                                                                           --1 Tipo de Registro   (R)
 																		       +'|'+ 
     '1'                                                                                                             --2 Consecutivo Concepto de 04-2  (R)
@@ -310,7 +310,7 @@ Select
 																	           +'|'+    
     'Tasa'                                                                                                          --4 Tipo (R)   
 																	           +'|'+     
-    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.16000' else '0.0000'end                   --5 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.160000' else '0.0000'end                   --5 % Impuesto (R)     
 																	           +'|'+     
     cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
 																	           +'|'+  
@@ -335,6 +335,8 @@ Select
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' 
+else ''
+end
 																			   
 -- JR inicio se agregan los conceptos de la factura
 +
@@ -417,7 +419,7 @@ Select
 
 
 ----SECCION 06 Impuesto trasladado (1:1)
-
+case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '06'                                                                                                            --1 Tipo de Registro   (R)
 																	           +'|'+     
     '002'                                                                                                           --2 Cod Impuesto  (R)     
@@ -447,7 +449,10 @@ Select
 																				+'|'+
    CAST(invoiceheader.ord_hdrnumber as varchar(20))											-- num de orden
 																				+'|'+
-																				+ '\n' +
+																				+ '\n' 
+	else ''
+	end
+	+
 '08'
 																				+'|'+
 	'Observaciones'
