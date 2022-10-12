@@ -94,7 +94,7 @@ BEGIN
 			inner join [dbo].[Sl_Pilgrims_Detalle] PD on PD.Pedido_Id = PP.Pedido_Id
 			where PD.Pedido_Id= ped.Pedido_Id
 			group by PD.Pedido_Id) Cajas,
-		r.Cajas2,r.Dolly,r.FlejePlastico,r.FlejePlastico2,r.ValePlastico,r.ValePlastico2
+		r.Cajas2,r.Dolly,r.FlejePlastico,r.FlejePlastico2,r.ValePlastico,r.ValePlastico2,CL.Client_Id
 		--select *
 		from [dbo].[sl_Pilgrims_Rutas] r 
 				inner join [dbo].[Sl_Pilgrims_Embarque] em on r.ruta = em.ruta 
@@ -114,8 +114,9 @@ BEGIN
 				cast(cast(r.ruta as int) as varchar) not in (Select oh.ord_refnum from orderheader oh where oh.ord_billto  in (select distinct ord_billto from orderheader where ord_billto like '%SAY%' or ord_billto = 'PISA' or ord_billto = 'WALMART') and oh.ord_refnum <> '')
 				--and em.Operador <> ''
 				--and (select count(*) from expiration where exp_id in (select trc_number from tractorprofile where trc_driver = em.Operador) and exp_completed <> 'Y') < 1
-		
---select * from company where cmp_name like '%say%' and cmp_address1 like '%camino a busta%'
+		ORDER BY cl.Client_Id ASC
+
+
 END
 
 END
