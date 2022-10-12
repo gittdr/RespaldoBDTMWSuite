@@ -50,6 +50,15 @@ begin
 		select @v_factorret = 0.0
 	end
 
+		-- caso especial factura 1374717
+
+	if @num_factura =1374717
+	begin
+	
+		select @v_factoriva = 0.0
+		select @v_factorret = 0.0
+	end
+
 -- obtengo el segmento que se encuentra con estatus STD
 
 select @lgh_hdrnumber = isnull(min(lgh_number),0) from legheader where ord_hdrnumber = @ord_hdrnumber 
@@ -299,7 +308,8 @@ Select
     ''                                                                                                               --11 DEscuento (O) 
 																	           +'|'+   
                                                                                + '\n' +
-
+--caso especial factura 1374717
+case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 041 Impuesto trasladado (1:1)
 case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '041'                                                                                                           --1 Tipo de Registro   (R)
@@ -335,6 +345,8 @@ case (invoiceheader.ivh_currency) when 'MX$' 	then
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' 
+else ''
+end
 else ''
 end
 																			   
@@ -417,7 +429,8 @@ end
 -- fin de los conceptos de la factura jr
 +
 
-
+--caso especial factura 1374717
+case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 06 Impuesto trasladado (1:1)
 case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '06'                                                                                                            --1 Tipo de Registro   (R)
@@ -450,6 +463,9 @@ case (invoiceheader.ivh_currency) when 'MX$' 	then
    CAST(invoiceheader.ord_hdrnumber as varchar(20))											-- num de orden
 																				+'|'+
 																				+ '\n' 
+	else ''
+	end
+
 	else ''
 	end
 	+

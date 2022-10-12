@@ -50,7 +50,14 @@ begin
 		select @v_factoriva = 0.0
 		select @v_factorret = 0.0
 	end
+	-- caso especial factura 1374717
 
+	if @num_factura =1374717
+	begin
+	
+		select @v_factoriva = 0.0
+		select @v_factorret = 0.0
+	end
 
 
 -- obtengo el segmento que se encuentra con estatus STD
@@ -332,7 +339,8 @@ Select
 																				+'|'+	   
 
                                                                                + '\n' +
-
+--caso especial factura 1374717
+case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 041 Impuesto trasladado (1:1)
  case (invoiceheader.ivh_currency) when 'MX$' 	then 
 
@@ -372,7 +380,10 @@ Select
 																	           +'|'+   
                                                                                + '\n' 		
 	else ''
-	end 
+	end
+	--caso especial factura 1374717
+	else ''
+	end
 -- JR inicio se agregan los conceptos de la factura
 
 +
@@ -455,7 +466,8 @@ Select
 -- fin de los conceptos de la factura jr
 
 +
-
+--caso especial factura 1374717
+case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 06 Impuesto trasladado (1:1)
 case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '06'                                                                                                            --1 Tipo de Registro   (R)
@@ -487,7 +499,11 @@ case (invoiceheader.ivh_currency) when 'MX$' 	then
                                                                                + '\n' 
 																			   else
 																			   ''
-																			   end +
+																			   end 
+																			   else
+																			   ''
+																			   end
+																			   +
 ----SECCION ORDEN
 	'08'
 																				+'|'+
