@@ -2,7 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-CREATE procedure [dbo].[sp_Insert_Merc_Pisa_JC](
+CREATE procedure [dbo].[sp_Insert_Merc_Pisa_MX_JC](
 @col1 varchar(100),
 @col2 varchar(100),
 @col3 varchar(100),
@@ -110,7 +110,7 @@ begin
 		@col31,
 		@col32,
 		@col33,
-		'GDL'
+		'MX'
 		) 
 end
 

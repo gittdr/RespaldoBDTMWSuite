@@ -58,7 +58,7 @@ Declare @UnidadPeso varchar(100);
 			inner join [dbo].[Sl_Pilgrims_Pedido] PP on PP.Client_Id = PC.Client_Id
 			inner join [dbo].[Sl_Pilgrims_Detalle] PD on PD.Pedido_Id = PP.Pedido_Id
 			inner join [dbo].[orderheader] oh on oh.ord_hdrnumber = (select max(ord_hdrnumber) from legheader where mov_number =@IdCampo) and oh.ord_refnum = cast(cast(PE.ruta as int) as varchar) 
-			inner join [dbo].[stops] stp on stp.ord_hdrnumber = oh.ord_hdrnumber and stp.cmp_id = (SELECT Compania_TMW FROM [dbo].[SL_PilgrimsTMW_CatalogoClientes] CC WHERE PC.IdClient= CC.Origen);
+			inner join [dbo].[stops] stp on stp.ord_hdrnumber = oh.ord_hdrnumber and stp.cmp_id = (SELECT MAX(Compania_TMW) FROM [dbo].[SL_PilgrimsTMW_CatalogoClientes] CC WHERE PC.IdClient= CC.Origen);
 		OPEN myCursor;
 		FETCH NEXT FROM myCursor INTO @stp_number, @Material,@Descripcion,@Peso,@Cantidad,@Unidad,@Pedido_id,@IdMercancia,@UnidadPeso;
 		WHILE @@FETCH_STATUS = 0 BEGIN

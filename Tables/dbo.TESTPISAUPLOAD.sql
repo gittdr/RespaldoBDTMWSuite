@@ -32,6 +32,7 @@ CREATE TABLE [dbo].[TESTPISAUPLOAD]
 [estado2] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pais2] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [colonia2] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[codigopostal2] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[codigopostal2] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[origen] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
