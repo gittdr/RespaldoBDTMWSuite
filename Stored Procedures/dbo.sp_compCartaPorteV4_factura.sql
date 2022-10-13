@@ -137,6 +137,9 @@ select @totaliva = Round(@totaliva,2,1)
 -- obtengo la cantidad de conceptos
 
 select  @cantidadConceptos = count(*) from #conceptosfactura2
+--print '@montoconcepto' + cast(@montoconcepto as varchar(10))
+
+
 Select
 ---- INICIO DE DOCTO POR LOTES(0,1)
 --'0000'																												--1 Tipo Registro
@@ -168,7 +171,8 @@ Select
 																	           +'|'+     
 	isnull(replace(format(GETDATE(),'yyyy/MM/dd HH:mm:ss'),'|',''),'')                                               --5 Fecha formato 24hrs (R)     
 																	           +'|'+     
-																		      
+CAST( invoiceheader.ivh_charge AS VARCHAR(10))
++
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)+@totalconceptos) as varchar(20))			         --6 Subtotal (R) 
 
 	                                                                           +'|'+    
