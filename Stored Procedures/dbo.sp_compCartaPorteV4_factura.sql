@@ -171,9 +171,8 @@ Select
 																	           +'|'+     
 	isnull(replace(format(GETDATE(),'yyyy/MM/dd HH:mm:ss'),'|',''),'')                                               --5 Fecha formato 24hrs (R)     
 																	           +'|'+     
-CAST( invoiceheader.ivh_charge AS VARCHAR(10))
-+
-    cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)+@totalconceptos) as varchar(20))			         --6 Subtotal (R) 
+
+    cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0) ) as varchar(20))			         --6 Subtotal (R) 
 
 	                                                                           +'|'+    
 	cast(convert(decimal (10,2),isnull(round(((invoiceheader.ivh_charge)*@v_factoriva)+@totaliva,2,1) ,0)) as varchar(20))  --7 Total imp trasladado
