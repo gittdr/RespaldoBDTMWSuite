@@ -24,6 +24,7 @@ GO
 
 
 
+
 --
 /* 
 
@@ -133,10 +134,13 @@ CREATE                                   VIEW   [dbo].[VISTA_dfe_Header]
 	interior_destino= left(isnull(E.cmp_misc2, ''),10),
 	colonia_destino= isnull(E.cmp_address2, ''),
 	municipio_destino = isnull(E.cmp_address3, F.cty_name),
-	cd_destino = isnull(F.cty_name, ''),
+	cd_destino = isnull(F.cty_name, ''),
+
+
 	edo_destino = (select stc_state_desc from statecountry where stc_state_c = F.cty_state),
 	pais_destino = isnull(E.cmp_country, ''),
-	ZIP_destino =left( isnull(E.cmp_zip, ''),6),
+	ZIP_destino =left( isnull(E.cmp_zip, ''),6),
+
 	NAME_destino = isnull(E.cmp_name, ''),
 	archivo_tif = ' ',
 	archivo_pdf = '',
@@ -217,7 +221,7 @@ E.cmp_id   = ivh_consignee
 UNION 
   SELECT   
 	version = '2.0',
-	serie =  Case  ivh_creditmemo
+	serie =  Case  invoiceheader.ivh_creditmemo
 	when 'N' then  'TDR'
 	when 'Y' then 'NC' end ,
 	llave = '',
@@ -232,7 +236,7 @@ UNION
 	motivo = '',
 	forma = 'PAGO EN UNA SOLA EXHIBICION',
 	metodos_pago = '' ,
-	tipo_comprobante =  case  ivh_creditmemo
+	tipo_comprobante =  case  invoiceheader.ivh_creditmemo
 	when 'N' then  'INGRESO'
 	when 'Y' then 'EGRESO'
 	end ,
@@ -241,7 +245,8 @@ UNION
 	imp2 = ABS(F.ivh_taxamount1),
 	usuario = ivh_user_id2,
 	fecha_genera =  CASE 
-         WHEN F.ivh_billto  = 'KRAFT' THEN ivh_billdate
+         WHEN F.ivh_billto  = 'KRAFT' THEN ivh_billdate
+
          WHEN F.ivh_billto <> 'KRAFT' THEN invoiceheader.ivh_printdate
         END,	 
 	invoice = F.ivh_invoicenumber ,
