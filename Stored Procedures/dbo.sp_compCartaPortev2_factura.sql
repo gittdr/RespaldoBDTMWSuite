@@ -29,8 +29,11 @@ declare @lgh_hdrnumber varchar(20),
 @ord_hdrnumber int,
 @num_factura int,
 @ivh_tipomoneda varchar(3),
+@ivh_llevaimpuestos int,
 @v_factoriva dec(2,2),
 @v_factorret dec(2,2)
+
+select @ivh_llevaimpuestos = 0
 
 select @num_factura = cast(@invoiceNumber as int)
 
@@ -120,6 +123,7 @@ TT2_remark varchar(254),TT2_cantidad float, TT2_rate money,TT2_unidadSat varchar
 		--Do something with Id here
 		if @taxiva = 'Y' 
 			set @totaliva = @totaliva + @montoconcepto *.16
+			select @ivh_llevaimpuestos = 1
 		if @taxretencion = 'Y'
 			set @totalretencion = @totalretencion + @montoconcepto * .04
 		set @totalconceptos = @totalconceptos + @montoconcepto
@@ -432,14 +436,14 @@ end
 --caso especial factura 1374717
 case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 06 Impuesto trasladado (1:1)
-case (invoiceheader.ivh_currency) when 'MX$' 	then 
+--jrcase (invoiceheader.ivh_currency) when 'MX$' 	then 
     '06'                                                                                                            --1 Tipo de Registro   (R)
 																	           +'|'+     
     '002'                                                                                                           --2 Cod Impuesto  (R)     
 																	           +'|'+    
     'Tasa'                                                                                                          --3 Tipo (R)   
 																	           +'|'+     
-    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.160000' else '0.0000'end              --4 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.160000' else '0.160000'end              --4 % Impuesto (R)     
 																	           +'|'+     
       cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1)+@totaliva,0)) as varchar(20))            --5 Monto Impuesto  (R)     
 																	           +'|'+   
@@ -466,8 +470,8 @@ case (invoiceheader.ivh_currency) when 'MX$' 	then
 	else ''
 	end
 
-	else ''
-	end
+	--else ''
+	--end
 	+
 '08'
 																				+'|'+

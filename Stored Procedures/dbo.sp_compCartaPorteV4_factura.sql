@@ -483,7 +483,7 @@ case (invoiceheader.ivh_custdoc) when 0	then
 																	           +'|'+    
     'Tasa'                                                                                                          --3 Tipo (R)   
 																	           +'|'+     
-    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.160000' else '0.0000'end                                 --4 % Impuesto (R)     
+    case (invoiceheader.ivh_currency) when 'MX$' 	then '0.160000' else '0.160000'end                                 --4 % Impuesto (R)     
 																	           +'|'+     
       cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1)+@totaliva,0)) as varchar(20))            --5 Monto Impuesto  (R)     
 																	           +'|'+   
