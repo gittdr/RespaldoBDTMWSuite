@@ -30,9 +30,12 @@ declare @lgh_hdrnumber varchar(20),
 @ord_hdrnumber int,
 @num_factura int,
 @ivh_tipomoneda varchar(3),
+@ivh_llevaimpuestos int,
 @v_factoriva dec(2,2),
 @v_factorret dec(2,2)
 
+
+select @ivh_llevaimpuestos = 0
 select @num_factura = cast(@invoiceNumber as int)
 
 select @ord_hdrnumber = ord_hdrnumber from invoiceheader where ivh_hdrnumber = @num_factura
@@ -122,6 +125,7 @@ TT2_remark varchar(254),TT2_cantidad float, TT2_rate dec(10,2),TT2_unidadSat var
 		--Do something with Id here
 		if @taxiva = 'Y' 
 			set @totaliva = @totaliva + @montoconcepto *.16
+			select @ivh_llevaimpuestos = 1
 		if @taxretencion = 'Y'
 			set @totalretencion = @totalretencion + @montoconcepto * .04
 		set @totalconceptos = @totalconceptos + @montoconcepto
@@ -472,7 +476,7 @@ case (invoiceheader.ivh_custdoc) when 0	then
 --caso especial factura 1374717
 case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 06 Impuesto trasladado (1:1)
-case (invoiceheader.ivh_currency) when 'MX$' 	then 
+--case (invoiceheader.ivh_currency) when 'MX$' 	then 
     '06'                                                                                                            --1 Tipo de Registro   (R)
 																	           +'|'+     
     '002'                                                                                                           --2 Cod Impuesto  (R)     
@@ -500,9 +504,9 @@ case (invoiceheader.ivh_currency) when 'MX$' 	then
      cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge*@v_factorret),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' 
-																			   else
-																			   ''
-																			   end 
+	--																		   else
+	--																		   ''
+	--																		   end 
 																			   else
 																			   ''
 																			   end
