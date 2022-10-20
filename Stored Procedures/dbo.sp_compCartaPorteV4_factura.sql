@@ -363,7 +363,7 @@ case (invoiceheader.ivh_custdoc) when 0	then
     case (invoiceheader.ivh_currency) when 'MX$' 	then '0.16000' else '0.0000'end 
 	--'0.1600'
 																	           +'|'+     
-    cast(convert(decimal (10,2),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
+    cast(convert(decimal (10,4),isnull(round((invoiceheader.ivh_charge*@v_factoriva),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
 																	           +'|'+  
     cast(convert(decimal (10,2),isnull(invoiceheader.ivh_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
