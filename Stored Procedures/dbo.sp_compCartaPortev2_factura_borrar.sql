@@ -22,7 +22,7 @@ Sentencia de prueba
 
 */
 
-CREATE proc [dbo].[sp_compCartaPortev2_factura]  @invoiceNumber varchar(20)
+CREATE proc [dbo].[sp_compCartaPortev2_factura_borrar]  @invoiceNumber varchar(20)
 
 as
 declare @lgh_hdrnumber varchar(20),
@@ -91,7 +91,7 @@ select @numrenglon = 1
 --select @numeroInvoice = SUBSTRING(@invoiceNumber,2,7) 
 
 create table #conceptosfactura2(TT2_cht_itemcode varchar(6), TT2_cht_description varchar(30), 
-TT2_ivd_description varchar(60),TT2_ivd_charge money,TT2_ivd_taxable1 char(1), TT2_ivd_taxable2 char(1), TT2_ivd_number int,
+TT2_ivd_description varchar(60),TT2_ivd_charge DEC(10,2),TT2_ivd_taxable1 char(1), TT2_ivd_taxable2 char(1), TT2_ivd_number int,
 TT2_remark varchar(254),TT2_cantidad float, TT2_rate DEC(10,2),TT2_unidadSat varchar(50),TT2_consecutivo int identity)
 
 	insert into #conceptosfactura2(TT2_cht_itemcode, TT2_cht_description , TT2_ivd_description ,TT2_ivd_charge 
@@ -102,10 +102,11 @@ TT2_remark varchar(254),TT2_cantidad float, TT2_rate DEC(10,2),TT2_unidadSat var
 	from invoicedetail invd,  chargetype cht,catWhenThen cwt
 	where invd.cht_itemcode = cht.cht_itemcode
 	and cwt.cWhen = cht_description
-	and invd.ivh_hdrnumber = @num_factura and cht.cht_itemcode not in ('LHF','DEL','VIAJE','PESO', 'FLEBIO')
+	and invd.ivh_hdrnumber = @num_factura and cht.cht_itemcode not in ('LHF','DEL','VIAJE','PESO')
 	order by invd.ivd_number
+	
 	-- suma el iva total de c/u de los conceptos
-	DECLARE @montoconcepto money, @taxiva char(1), @taxretencion char(1), @totaliva money, @totalretencion money
+	DECLARE @montoconcepto money, @taxiva char(1), @taxretencion char(1), @totaliva dec(10,2), @totalretencion dec(10,2)
 	set @totaliva =0
 	set @totalretencion = 0
 	set @totalconceptos = 0
@@ -232,6 +233,7 @@ Select
 
 --SECION RECEPTOR (1:1)
 
+
     '02'                                                                                                              --1 Tipo de Registro   (R)
 																		       +'|'+ 
     isnull((select replace(cmp_id,'|','') from company where cmp_id = invoiceheader.ivh_billto),'')                     --2 ID Cliente  (R)
@@ -353,10 +355,12 @@ else ''
 end
 else ''
 end
+
 																			   
 -- JR inicio se agregan los conceptos de la factura
 +
- CASE when @cantidadConceptos = '0' then
+--/*4
+ CASE when @cantidadConceptos = 0 then
  ''
  else
 	replace( (STUFF(( 
@@ -400,11 +404,12 @@ end
 	'Tasa'
 																				+'|'+
 	'0.160000'
-																				+'|'+
-	casT(isnull(cast(round((TT2_ivd_charge * 0.1600),2,1) as decimal(8,2)),'0')  as varchar(20))	
-																				+'|'+
-	casT(isnull(cast(TT2_ivd_charge as decimal(8,2)),'0')  as varchar(20))	
+																				+'|'
+	--casT(isnull(cast(round((TT2_ivd_charge * 0.1600),2,1) as decimal(8,2)),'0')  as varchar(20))	
+--																				+'|'+
+	--casT(isnull(cast(TT2_ivd_charge as decimal(8,2)),'0')  as varchar(20))	
 	end
+	
 																				+'|'+
 	--'ºçº'							+					 --Wildcard para despues remplazar por salto de linea
 	
@@ -432,7 +437,7 @@ end
 	end--case
 -- fin de los conceptos de la factura jr
 +
-
+--4*/
 --caso especial factura 1374717
 case (invoiceheader.ivh_custdoc) when 0	then
 ----SECCION 06 Impuesto trasladado (1:1)
