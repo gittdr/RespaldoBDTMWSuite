@@ -104,7 +104,7 @@ TT2_remark varchar(254),TT2_cantidad float, TT2_rate dec(10,2),TT2_unidadSat var
 	from invoicedetail invd,  chargetype cht,catWhenThen cwt
 	where invd.cht_itemcode = cht.cht_itemcode
 	and cwt.cWhen = cht_description
-	and invd.ivh_hdrnumber = @num_factura and cht.cht_itemcode not in ('LHF','DEL','VIAJE')
+	and invd.ivh_hdrnumber = @num_factura and cht.cht_itemcode not in ('LHF','DEL','VIAJE','PESO', 'FLEBIO')
 	order by invd.ivd_number
 	-- suma el iva total de c/u de los conceptos
 	DECLARE @montoconcepto money, @taxiva char(1), @taxretencion char(1), @totaliva money, @totalretencion money
@@ -181,24 +181,24 @@ Select
 	                                                                           +'|'+    
 	cast(convert(decimal (10,2),isnull(round(((invoiceheader.ivh_charge)*@v_factoriva)+@totaliva,2,1) ,0)) as varchar(20))  --7 Total imp trasladado
 																		       +'|'+    
-    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)) as varchar(20)) 							  --8 Total imp retenido
+    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion) as varchar(20)) 							  --8 Total imp retenido
                                                                                +'|'+   
 	''																										     	 --9 Descuentos																		     
 																		       +'|'+     
    cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge)+@totalconceptos,0))+ convert(decimal (10,2)
    ,isnull(round(((invoiceheader.ivh_charge)*@v_factoriva)+@totaliva,2,1),0)) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*@v_factorret,0)) as varchar(20))                                                        --10 Total
+   isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion) as varchar(20))                                                        --10 Total
 	
 																		+'|'+     
     REPLACE(REPLACE(dbo.NumeroEnLetra(ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
 	convert(decimal (10,2),isnull(  round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0  )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)))), 0, 1))	 + 
+	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion))), 0, 1))	 + 
 	(CASE isnull(invoiceheader.ivh_currency,'M.N') WHEN 'MX$' THEN ' PESOS' ELSE ' DOLARES' END) + ' ' +
 	CAST((((ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
 	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0    )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
+	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
 	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0)+@totaliva) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*@v_factorret,0)),0))), 0, 1)) AS varchar) 
+   isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion),0))), 0, 1)) AS varchar) 
     + ' /100 ' + (CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN 'M.N.' ELSE 'DLS' END), '0.', ''), '	', '')		 
 	                                                                                                                 --11 Total con letra	
 	    																       +'|'+     
