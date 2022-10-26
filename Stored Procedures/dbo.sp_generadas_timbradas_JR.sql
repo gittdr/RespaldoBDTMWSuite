@@ -84,6 +84,12 @@ BEGIN --1 Principal
 		BEGIN -- del cursor Unidades_Cursor --3
 		set @Vi_timbradas = 0
 		Set @Vi_automaticas = 0
+
+		IF  @V_billto = 'PEÑATECA'
+		BEGIN
+		SELECT @V_billto = 'PEÑAFIEL'
+		END
+
 		--Busca el dato en la tabla de las timbradas.
 		select @Vi_timbradas = isnull(Tb_Timbradas,0) from @TTordenestimbradas where Tb_billto = @V_billto and Tb_semana = @Vi_sem and Tb_mes = @Vi_mes and Tb_anio = @Vi_anio
 

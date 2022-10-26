@@ -501,7 +501,7 @@ case (invoiceheader.ivh_custdoc) when 0	then
 
     case (invoiceheader.ivh_currency) when 'MX$' 	then '0.040000' else '0.00000'end                                                  --3 % Impuesto (R)     
 																	           +'|'+     
-     cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge*@v_factorret),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
+     cast(convert(decimal (10,2),isnull((invoiceheader.ivh_charge*@v_factorret)+@totalretencion,0)) as varchar(20))                          --4 Monto Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' 
 	--																		   else
