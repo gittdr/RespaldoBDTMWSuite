@@ -177,9 +177,10 @@ Select
 	(CASE isnull(invoiceheader.ivh_currency,'M.N') WHEN 'MX$' THEN ' PESOS' ELSE ' DOLARES' END) + ' ' +
 	CAST((((ROUND((abs(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
 	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0    )+@totaliva) - 
-	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
+	convert(decimal (10,2),isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion))), 2)))) - 
+	(ROUND((abs(isnull(convert(decimal (10,2),isnull((invoiceheader.ivh_charge+@totalconceptos),0))+ 
 	convert(decimal (10,2),isnull( round((invoiceheader.ivh_charge)*@v_factoriva,2,1),0)+@totaliva) - convert(decimal (10,2),
-   isnull((invoiceheader.ivh_charge)*@v_factorret,0)),0)+@totalretencion)), 0, 1)) AS varchar) 
+   isnull((invoiceheader.ivh_charge)*@v_factorret,0)+@totalretencion),0))), 0, 1)) AS varchar) 
     + ' /100 ' + (CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN 'M.N.' ELSE 'DLS' END), '0.', ''), '	', '')		 
 	                                                                                                                 --11 Total con letra	
 	    																       +'|'+     
