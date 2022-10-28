@@ -7,6 +7,6 @@ CREATE PROCEDURE [dbo].[sp_Total_Order_Procesadas_Dhl_PRO_JC]
 	
 AS
 BEGIN
-        SELECT orden,segmento,billto,fechaTimbrado FROM RtDhl
+        SELECT orden,segmento,billto,fechaTimbrado FROM RtDhl ORDER BY fechaTimbrado DESC
 END
 GO

@@ -7,6 +7,6 @@ CREATE PROCEDURE [dbo].[sp_Total_Order_Procesadas_PalacioH_PRO_JC]
 	
 AS
 BEGIN
-        SELECT orden,segmento,billto,fechaTimbrado FROM RtPlacioH
+        SELECT orden,segmento,billto,fechaTimbrado FROM RtPlacioH ORDER BY fechaTimbrado DESC
 END
 GO
