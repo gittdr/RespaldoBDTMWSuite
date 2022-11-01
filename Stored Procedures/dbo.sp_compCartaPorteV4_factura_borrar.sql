@@ -23,7 +23,7 @@ Sentencia de prueba
 
 */
 
-CREATE proc [dbo].[sp_compCartaPorteV4_factura]  @invoiceNumber varchar(20)
+CREATE proc [dbo].[sp_compCartaPorteV4_factura_borrar]  @invoiceNumber varchar(20)
 
 as
 declare @lgh_hdrnumber varchar(20),
@@ -680,16 +680,11 @@ replace( (STUFF((
 	
 							
     +
+	/* prefinal 
 --SECCION MERCANCÍAS (1:1)
 
     'CP2_MER'                                                                                                                                                  --1 Tipo de Registro
 																	        +'|'+      
- -- cast( cast(
- --   (select case when SUM(fgt_weight) <= 0 then 0.01 else SUM(fgt_weight)  end 
-	--from freightdetail where stp_number in  (select stp_number from stops where stp_type  ='PUP'  
-	--and stops.ord_hdrnumber = orderheader.ord_hdrnumber))  																										--2 Peso Bruto Total original jr
-	--as decimal(10,2))
-	--as varchar(20))
 	 cast( cast(
     (select case when SUM(ivd_wgt) <= 0 then 0.01 else SUM(ivd_wgt)  end 
 	from invoicedetail where ivh_hdrnumber = @num_factura and cht_itemcode = 'DEL' and ivd_wgt > 0 )  																										--2 Peso Bruto Total original jr
@@ -698,16 +693,9 @@ replace( (STUFF((
 																	        +'|'+ 
      
 	case isnull((select max(ivd_wgtunit) from invoicedetail where ivh_hdrnumber = @num_factura and cht_itemcode = 'DEL' and ivd_wgt > 0 ),0) when'TON' then 'L86'     
-	 when 'KGM' then 'KGM' when 'LBS' then 'LBR'else 'L86' end  
-  --   case isnull((select (MAX(stp_weightunit)) from stops where stops.ord_hdrnumber = orderheader.ord_hdrnumber),0) when'TON' then 'L86'     
-	 --when 'KGM' then 'KGM' when 'LBS' then 'LBR'else 'L86' end                                                                                                 --3 Unidad de Peso  --> catCartaPorte:c_ClaveUnidadPeso
+	 when 'KGM' then 'KGM' when 'LBS' then 'LBR'else 'L86' end                                                                                 --3 Unidad de Peso  --> catCartaPorte:c_ClaveUnidadPeso
 																	        +'|'+ 
-
- --cast(cast(
-	--(select case when SUM(fgt_weight) <= 0 then 0.01 else SUM(fgt_weight)  end 
-	--from freightdetail where stp_number in  (select stp_number from stops where stp_type  ='PUP'  and stops.ord_hdrnumber = orderheader.ord_hdrnumber)) --original jr
-	--as decimal(10,2))
-	--as varchar(20))  
+ 
 	cast(cast(
 	(select sum(ivd_wgt) from invoicedetail where ivh_hdrnumber = @num_factura and cht_itemcode = 'DEL' and ivd_wgt > 0)
 	as decimal(10,2))
@@ -718,16 +706,13 @@ replace( (STUFF((
      --4 Peso Neto Total
 
 																	        +'|'+ 
-	--cast(isnull((select COUNT( cmd_code ) from freightdetail where cmd_code <> 'UNKNOWN' and stp_number in
-	--(select stp_number from stops where stops.ord_hdrnumber = orderheader.ord_hdrnumber 	and stp_type = 'PUP'
-	--	and stp_event in (select abbr from eventcodetable where ect_billable = 'Y'))),0)    as varchar(5))
 		cast((select count(*) from invoicedetail where ivh_hdrnumber = @num_factura and cht_itemcode = 'DEL' and ivd_wgt > 0) as varchar(5)) --5 Numero Total de Mercancías
 																	        +'|'+ 
-     ''                                                                                                                                                       --6 Cargo por Tasación
+     ''                                                         prefinal */                                                                                              --6 Cargo por Tasación
 																	        +'|'+  
                                                                              + '\n'   
 
-
+/* jr final
 
 --SECCION MERCANCÍA (1:N)
                                                                                  +
@@ -786,7 +771,8 @@ replace( (STUFF((
 	from invoicedetail f where ivh_hdrnumber = @num_factura and cht_itemcode = 'DEL' and ivd_wgt > 0
 	FOR XML PATH('')),1,0,'')
 	),'ºçº' , '\n' )
-						
+
+jrfinal */				
 
 
 --SECCION CANTIDAD TRANSPORTA (0:N)
