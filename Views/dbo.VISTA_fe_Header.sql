@@ -14,6 +14,7 @@ GO
 
 
 
+
 CREATE VIEW [dbo].[VISTA_fe_Header]
 AS
 /* ********************************CASO SINGLE INVOICES*********************/ 
@@ -154,17 +155,6 @@ totalletra = REPLACE(REPLACE(dbo.NumeroEnLetra(ROUND((abs(ivh_totalcharge)), 0, 
 
 							   UNION
 
-
-
-
-
-
-
-
-
-
-
-
 SELECT   
 /*Información General del CFD*/ 
 idcomprobante = (CASE f.ivh_creditmemo WHEN 'N' THEN 'TDRT' WHEN 'Y' THEN 'NCT' END) + '-' + cast ((SELECT        max(ivh_invoicenumber)
@@ -296,7 +286,7 @@ total =    (SELECT       round(sum(importe + iva_monto - ret_monto), 2)  FROM   
                                FROM            invoiceheader WITH (nolock)
                                WHERE        ivh_mbnumber = F.ivh_mbnumber), tipocomprobante = (CASE f.ivh_creditmemo WHEN 'N' THEN 'I' WHEN 'Y' THEN 'E' END), lugarexpedicion = '76240', confirmacion = '', 
                          relacion = CASE WHEN F.ivh_creditmemo = 'Y' THEN '01' ELSE '' END, uuidrel = CASE WHEN F.ivh_creditmemo = 'Y' THEN isnull
-                             ((SELECT        uuid
+                             ((SELECT       min( uuid)
                                  FROM            [172.24.16.113].CFDI.DBO.[cfdi_detallecfdi] WITH (nolock)
                                  WHERE        folio =
                                                               (SELECT        CAST(ivh_cmrbill_link AS VARCHAR)
