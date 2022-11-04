@@ -34,7 +34,8 @@ Select ccc.compania_tmw as origenTMW,
 		isnull((select top 1 mpp_tractornumber from manpowerprofile where mpp_firstname +' '+ mpp_lastname = r.Operador),
 		isnull((select  top 1 mpp_tractornumber from manpowerprofile where r.Operador like '%'+' ' +mpp_lastname and mpp_status = 'USE'),
 		(select top 1 mpp_tractornumber from manpowerprofile where mpp_id = (Select idoperador from Sl_pilgrims_Operadores where alias = r.Operador))
-		))as Tractor
+		))as Tractor,
+		(select MAX(pisa.origen) from TESTPISAUPLOAD pisa where pisa.idenvio = r.ruta) as OrigenPISA
 		-- 'PLGTEPE' + '-'+ Cast(r.idBitacora as Varchar) AS idBitacora,
 
 from [dbo].[sl_Pilgrims_Rutas] r 
