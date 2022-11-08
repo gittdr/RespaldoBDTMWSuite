@@ -638,7 +638,7 @@ replace( (STUFF((
 
 	
 								
-                                                                                 +
+    /*jr12                                                                             +
 
 --SECCION MERCANCÍAS (1:1)
 
@@ -747,7 +747,7 @@ replace( (STUFF((
 	FOR XML PATH('')),1,0,'')
 	),'ºçº' , '\n' )
 						
-
+jr12*/
 
 
 --SECCION CANTIDAD TRANSPORTA (0:N)
