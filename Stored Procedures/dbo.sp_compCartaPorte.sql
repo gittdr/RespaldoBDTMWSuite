@@ -74,7 +74,7 @@ begin
 			 end
 			else
 			begin
-				if @Cliente = 'CUERVO' OR @Cliente = 'VERDVALL' OR @Cliente = 'DELAROSA' or @Cliente = 'PISA'-- and @lgh_hdrnumber =1272144
+				if @Cliente = 'CUERVO' OR @Cliente = 'VERDVALL' OR @Cliente = 'DELAROSA' or @Cliente = 'PISA' or @Cliente = 'PISDED'-- and @lgh_hdrnumber =1272144
 
 					begin
 						exec sp_compCartaPortev2_conceptosfac @lgh_hdrnumber	

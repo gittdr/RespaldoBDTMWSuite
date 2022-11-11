@@ -7,7 +7,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-Create PROCEDURE [dbo].[sp_sl_Obtiene_Operador] (@dato varchar(5000),@IdCampo varchar(500) , @ConjuntoDatos varchar(500))
+CREATE PROCEDURE [dbo].[sp_sl_Obtiene_Operador] (@dato varchar(5000),@IdCampo varchar(500) , @ConjuntoDatos varchar(500))
 	-- Add the parameters for the stored procedure here
 	
 AS
@@ -23,7 +23,10 @@ IF(@ConjuntoDatos = 'GetOpe')
 BEGIN
 
 select top 1 mp.mpp_id,mp.mpp_tractornumber,oh.ord_hdrnumber,ev.evt_tractor,
-ev.evt_trailer1,ev.evt_dolly,ev.evt_trailer2,stp.stp_status, stp.stp_type
+ev.evt_trailer1,ev.evt_dolly,ev.evt_trailer2, 
+(Case when ev.evt_eventcode = 'LUL' then 'CARGADO' else 'VACIO' end) as stp_status, 
+ev.evt_eventcode as stp_type,
+mp.mpp_firstname + ' ' + mp.mpp_lastname as mpp_name, oh.ord_billto
 from manpowerprofile mp 
 left outer join orderheader oh on oh.ord_driver1 = mp.mpp_id and oh.ord_status in ('AVL','PLN','STD') 
 left outer join Event ev on ev.ord_hdrnumber = oh.ord_hdrnumber
