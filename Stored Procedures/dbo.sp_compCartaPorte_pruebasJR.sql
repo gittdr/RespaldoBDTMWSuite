@@ -42,6 +42,9 @@ select @totSegmentos = count(*) from legheader where ord_hdrnumber = @numOrden;
 
 if @totSegmentos = 0 Return
 
+		exec sp_compCartaPortev4_conceptosfac @lgh_hdrnumber	
+
+/*
 if @totSegmentos > 1 
 	begin
 		 exec sp_compCartaPortev2_OrdSegmentada @lgh_hdrnumber	
@@ -52,4 +55,5 @@ if @totSegmentos > 1
 		exec sp_compCartaPortev2 @lgh_hdrnumber	
 		--select '1 segmento'
 	end
+	*/
 GO

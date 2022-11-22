@@ -159,26 +159,26 @@ Select
     cast(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0)) as varchar(20))			                     --6 Subtotal (R) 
 
 	                                                                           +'|'+    
-	cast(convert(decimal (10,2),isnull(round((orderheader.ord_rate*.16),2,1) +@totaliva,0)) as varchar(20))     --7 Total imp trasladado
+	cast(convert(decimal (10,2),isnull(round((orderheader.ord_charge*.16),2,1) +@totaliva,0)) as varchar(20))     --7 Total imp trasladado
 																		       +'|'+    
-    cast(convert(decimal (10,2),isnull((orderheader.ord_rate)*.04,0)) as varchar(20)) 							  --8 Total imp retenido
+    cast(convert(decimal (10,2),isnull((orderheader.ord_charge)*.04,0)) as varchar(20)) 							  --8 Total imp retenido
                                                                                +'|'+   
 	''																										     	 --9 Descuentos																		     
 																		       +'|'+     
    cast(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0))+ convert(decimal (10,2)
-   ,isnull(round(((orderheader.ord_rate)*.16),2,1),0)+@totaliva) - convert(decimal (10,2),
-   isnull((orderheader.ord_rate)*.04,0)) as varchar(20))                                                        --10 Total
+   ,isnull(round(((orderheader.ord_charge)*.16),2,1),0)+@totaliva) - convert(decimal (10,2),
+   isnull((orderheader.ord_charge)*.04,0)) as varchar(20))                                                        --10 Total
 																		
 																		+'|'+     
     REPLACE(REPLACE(dbo.NumeroEnLetra(ROUND((abs(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0))+ 
-	convert(decimal (10,2),isnull(  round((orderheader.ord_rate)*.16,2,1),0  )+@totaliva) - 
-	convert(decimal (10,2),isnull((orderheader.ord_rate)*.04,0)))), 0, 1))	 + 
+	convert(decimal (10,2),isnull(  round((orderheader.ord_charge)*.16,2,1),0  )+@totaliva) - 
+	convert(decimal (10,2),isnull((orderheader.ord_charge)*.04,0)))), 0, 1))	 + 
 	(CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN ' PESOS' ELSE ' DOLARES' END) + ' ' +
 	CAST((((ROUND((abs(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0))+ 
-	convert(decimal (10,2),isnull( round((orderheader.ord_rate)*.16,2,1),0    )+@totaliva) - 
-	convert(decimal (10,2),isnull((orderheader.ord_rate)*.04,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0))+ 
-	convert(decimal (10,2),isnull( round((orderheader.ord_rate)*.16,2,1),0)+@totaliva) - convert(decimal (10,2),
-   isnull((orderheader.ord_rate)*.04,0)),0))), 0, 1)) AS varchar) 
+	convert(decimal (10,2),isnull( round((orderheader.ord_charge)*.16,2,1),0    )+@totaliva) - 
+	convert(decimal (10,2),isnull((orderheader.ord_charge)*.04,0)))), 2)))) - (ROUND((abs(isnull(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0))+ 
+	convert(decimal (10,2),isnull( round((orderheader.ord_charge)*.16,2,1),0)+@totaliva) - convert(decimal (10,2),
+   isnull((orderheader.ord_charge)*.04,0)),0))), 0, 1)) AS varchar) 
     + ' /100 ' + (CASE isnull(orderheader.ord_currency,'M.N') WHEN 'MX$' THEN 'M.N.' ELSE 'DLS' END), '0.', ''), '	', '')		 
 	                                                                                                                 --11 Total con letra	
 	    																       +'|'+     
@@ -311,9 +311,9 @@ Select
     --'Viaje (Tarifa Fija)'                                                       --8 Descripcion (R)    
 	
 																	           +'|'+     
-    cast(convert(decimal (10,2),isnull(orderheader.ord_rate,0)) as varchar(20))                               --9 Valor unitario  (R)     
+    cast(convert(decimal (10,2),isnull(orderheader.ord_charge,0)) as varchar(20))                               --9 Valor unitario  (R)     
 																	           +'|'+  
-    cast(convert(decimal (10,2),isnull(orderheader.ord_rate,0)) as varchar(20))                               --10 Importe  (R)     
+    cast(convert(decimal (10,2),isnull(orderheader.ord_charge,0)) as varchar(20))                               --10 Importe  (R)     
 																	           +'|'+   
     ''                                                                                                        --11 DEscuento (O) 
 																	           +'|'+   
@@ -335,9 +335,9 @@ Select
 																	           +'|'+     
     '0.160000'                                                                                                      --5 % Impuesto (R)     
 																	           +'|'+     
-    cast(convert(decimal (10,2),isnull(round((orderheader.ord_rate*.16),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
+    cast(convert(decimal (10,2),isnull(round((orderheader.ord_charge*.16),2,1),0)) as varchar(20))                          --6 Monto Impuesto  (R)     
 																	           +'|'+  
-    cast(convert(decimal (10,2),isnull(orderheader.ord_rate,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
+    cast(convert(decimal (10,2),isnull(orderheader.ord_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' +
 
@@ -353,9 +353,9 @@ Select
 																	           +'|'+     
     '0.040000'                                                                                                      --5 % Impuesto (R)     
 																	           +'|'+     
-    cast(convert(decimal (10,2),isnull(orderheader.ord_rate*.04,0)) as varchar(20))                          --6 Monto Impuesto  (R)     
+    cast(convert(decimal (10,2),isnull(orderheader.ord_charge*.04,0)) as varchar(20))                          --6 Monto Impuesto  (R)     
 																	           +'|'+  
-    cast(convert(decimal (10,2),isnull(orderheader.ord_rate,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
+    cast(convert(decimal (10,2),isnull(orderheader.ord_charge,0)) as varchar(20))                              --7 Base para Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' 
 																			   
@@ -453,7 +453,7 @@ Select
 																	           +'|'+     
     '0.160000'                                                                                                      --4 % Impuesto (R)     
 																	           +'|'+     
-      cast(convert(decimal (10,2),isnull(round((orderheader.ord_rate*.16),2,1)+@totaliva,0)) as varchar(20))            --5 Monto Impuesto  (R)     
+      cast(convert(decimal (10,2),isnull(round((orderheader.ord_charge*.16),2,1)+@totaliva,0)) as varchar(20))            --5 Monto Impuesto  (R)     
 																	           +'|'+   
 		cast(convert(decimal (10,2),isnull(orderheader.ord_totalcharge,0)) as varchar(20))								--6 Base Traslado
 																	           +'|'+
@@ -466,7 +466,7 @@ Select
 																	           +'|'+     
     '0.040000'                                                                                                      --3 % Impuesto (R)     
 																	           +'|'+     
-     cast(convert(decimal (10,2),isnull((orderheader.ord_rate*.04),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
+     cast(convert(decimal (10,2),isnull((orderheader.ord_charge*.04),0)) as varchar(20))                          --4 Monto Impuesto  (R)     
 																	           +'|'+   
                                                                                + '\n' +
 	----SECCION ORDEN

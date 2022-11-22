@@ -20,13 +20,15 @@ Sentencia de prueba
 
 
 
-create proc [dbo].[sp_DebugvalidaCFDICartaporte_pruebasJR] (@leg varchar(20))
+CREATE proc [dbo].[sp_DebugvalidaCFDICartaporte_pruebasJR] (@leg varchar(20))
 as
 
 Declare @tablevar table(cadena varchar(max), resultado varchar(10))
 insert into @tablevar(cadena, resultado) 
 
-exec  sp_validaCFDICartaporte  @leg
+select * from @tablevar
 
-SELECT replace(cadena, '<br>',CHAR(13))  FROM @tablevar
+--exec  sp_validaCFDICartaporte_pruebasJR  @leg
+
+--SELECT replace(cadena, '<br>',CHAR(13))  FROM @tablevar
 GO

@@ -40,12 +40,7 @@ declare @primerLetra char(1),
 		@num_factura varchar(20),
 		@num_movimiento int
 
--- extrae la primer letra del @lgh_hdrnumber si es A,B,C es una factura
-	select @primerLetra = SUBSTRING(@lgh_hdrnumber,1,1)
-
-
-if @primerLetra = 'A' or @primerLetra = 'B' or @primerLetra = 'C' 
-begin
+/*
 select @num_factura = @lgh_hdrnumber
 select @num_movimiento = mov_number from invoiceheader where ivh_invoicenumber = @num_factura
 select @lgh_hdrnumber2 = MIN(lgh_number) from legheader where mov_number = @num_movimiento AND lgh_driver1 <> 'UNKNOWN'
@@ -262,15 +257,16 @@ select replace(Mensaje,'^','') as Mensaje, case when Mensaje like '%^%' then 'Er
 
 end
 
-ELSE
-begin
+--ELSE
+--begin
+*/
 		select replace(Mensaje,'^','') as Mensaje, case when Mensaje like '%^%' then 'Error' else 'OK' end as Validacion from (
 
 
 		select 
 
 		  case when 
-			  (select count(Folio) from VISTA_Carta_Porte where LegNum = @lgh_hdrnumber) >=1 then '<br> <br> ****Ya existe un CFDI Complemento Carta Porte Generado 
+			  (select count(Folio) from VISTA_Carta_Porte where LegNum = @lgh_hdrnumber) >=10 then '<br> <br> ****Ya existe un CFDI Complemento Carta Porte Generado 
 																								   para el número de segmento '+ '<b style='+''''+'color:black;'+''''+'>' + @lgh_hdrnumber+ ' </b> *****'  + '<br>'+  
 																								   '<br>' + 
 																								  '<b style='+''''+'color:red;'+''''+'> Si el viaje se segmento con otra unidad/operador es necesario
@@ -483,6 +479,6 @@ begin
 		where lgh_number = @lgh_hdrnumber
 
 		) as q
-end
+--end
 
 GO

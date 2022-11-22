@@ -20,13 +20,15 @@ Sentencia de prueba  sp_DEbugCompCartaPorte  1234980
 
 
 
-create proc [dbo].[sp_DEbugCompCartaPorte_pruebasJR] (@leg varchar(20))
+CREATE proc [dbo].[sp_DEbugCompCartaPorte_pruebasJR] (@leg varchar(20))
 as
 
 Declare @tablevar table(cadena varchar(max))
 insert into @tablevar(cadena) 
 
-exec sp_compCartaPorte @leg
+exec sp_compCartaPorte_pruebasJR @leg
+--exec sp_compCartaPortev4_conceptosfac @leg
+
 
 SELECT replace(cadena, '\n',CHAR(13))  FROM @tablevar
 GO
