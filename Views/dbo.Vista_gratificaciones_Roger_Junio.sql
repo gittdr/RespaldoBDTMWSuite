@@ -9,6 +9,7 @@ GO
 
 
 
+
 CREATE VIEW [dbo].[Vista_gratificaciones_Roger_Junio]
 AS
 SELECT        TOP (100) PERCENT COUNT(*) AS veces, SUM(pd.pyd_amount) AS monto,  dbo.orderheader.ord_tractor as Tractor, Codigos_comprobacion.descripcion, pd.pyd_description,DATEPART(year, pd.pyd_createdon) AS añocrea, DATEPART(month, pd.pyd_createdon) AS mescrea, 
@@ -22,7 +23,8 @@ SELECT        TOP (100) PERCENT COUNT(*) AS veces, SUM(pd.pyd_amount) AS monto, 
 							   ,Codigos_comprobacion.[TipoAtribucion],pd.pyd_createdon 
 							   ,(Select max([proyecto]) from [dbo].[TractorProyHistory] tph where tph.[trc_number] = dbo.orderheader.ord_tractor and tph.[fecha] = cast(pd.pyd_createdon as date)) as proye,
 							    pd.pyh_payperiod as fechapago,
-							   orderheader.ord_revtype4 as EC
+							   orderheader.ord_revtype4 as EC,
+							   (select cty_name from city where cty_code =  pd.lgh_startcity) as ciudad
 FROM            dbo.paydetail AS pd WITH (nolock) 
 						 INNER JOIN dbo.Codigos_comprobacion AS Codigos_comprobacion ON ISNULL(pd.pyd_tprsplit_number, 50) = Codigos_comprobacion.id_codigo 
 						 LEFT OUTER JOIN dbo.paytype AS pt WITH (nolock) ON pd.pyt_itemcode = pt.pyt_itemcode 
@@ -31,7 +33,7 @@ WHERE        (pd.pyt_itemcode IN ('COMGRA')) AND (pd.pyd_createdon > '01-01-2020
 GROUP BY DATEPART(year, pd.pyd_createdon), DATEPART(month, pd.pyd_createdon),  dbo.orderheader.ord_tractor,Codigos_comprobacion.descripcion,pd.pyd_description ,dbo.orderheader.ord_revtype3, dbo.orderheader.ord_hdrnumber, pd.asgn_id, 
                          dbo.orderheader.ord_completiondate,Codigos_comprobacion.[TipoAtribucion],pd.pyd_createdon ,
 						 pd.pyh_payperiod ,
-							   orderheader.ord_revtype4 
+							   orderheader.ord_revtype4 , pd.lgh_startcity
 						 ORDER BY añocrea desc, mescrea desc
 GO
 EXEC sp_addextendedproperty N'MS_DiagramPane1', N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
