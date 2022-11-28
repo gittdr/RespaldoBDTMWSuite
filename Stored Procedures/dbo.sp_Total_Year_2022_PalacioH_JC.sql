@@ -11,7 +11,8 @@ BEGIN
 (SELECT COUNT(*) AS total FROM RtPlacioH WHERE fechaTimbrado is not null AND MONTH(try_CONVERT(DATETIME, fechaTimbrado)) = 08 AND YEAR(try_CONVERT(DATETIME, fechaTimbrado)) = '2022' GROUP BY MONTH(try_CONVERT(DATETIME, fechaTimbrado))) AS AGOSTO,
 (SELECT COUNT(*) AS total FROM RtPlacioH WHERE fechaTimbrado is not null AND MONTH(try_CONVERT(DATETIME, fechaTimbrado)) = 09 AND YEAR(try_CONVERT(DATETIME, fechaTimbrado)) = '2022' GROUP BY MONTH(try_CONVERT(DATETIME, fechaTimbrado))) AS SEPTIEMBRE,
 (SELECT COUNT(*) AS total FROM RtPlacioH WHERE fechaTimbrado is not null AND MONTH(try_CONVERT(DATETIME, fechaTimbrado)) = 10 AND YEAR(try_CONVERT(DATETIME, fechaTimbrado)) = '2022' GROUP BY MONTH(try_CONVERT(DATETIME, fechaTimbrado))) AS OCTUBRE,
-(SELECT COUNT(*) AS total FROM RtPlacioH WHERE fechaTimbrado is not null AND MONTH(try_CONVERT(DATETIME, fechaTimbrado)) = 11 AND YEAR(try_CONVERT(DATETIME, fechaTimbrado)) = '2022' GROUP BY MONTH(try_CONVERT(DATETIME, fechaTimbrado))) AS NOVIEMBRE 
+(SELECT COUNT(*) AS total FROM RtPlacioH WHERE fechaTimbrado is not null AND MONTH(try_CONVERT(DATETIME, fechaTimbrado)) = 11 AND YEAR(try_CONVERT(DATETIME, fechaTimbrado)) = '2022' GROUP BY MONTH(try_CONVERT(DATETIME, fechaTimbrado))) AS NOVIEMBRE,
+(SELECT COUNT(*) AS total FROM RtPlacioH WHERE fechaTimbrado is not null AND MONTH(try_CONVERT(DATETIME, fechaTimbrado)) = 12 AND YEAR(try_CONVERT(DATETIME, fechaTimbrado)) = '2022' GROUP BY MONTH(try_CONVERT(DATETIME, fechaTimbrado))) AS DICIEMBRE
 FROM RtPlacioH        
 END
 GO
