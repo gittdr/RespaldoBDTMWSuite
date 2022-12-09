@@ -22,7 +22,8 @@ declare @texto varchar(100)
 IF(@ConjuntoDatos = 'GetOpe')
 BEGIN
 
-select top 1 mp.mpp_id,mp.mpp_tractornumber,oh.ord_hdrnumber,ev.evt_tractor,
+select top 1 mp.mpp_id,--mp.mpp_tractornumber
+ev.evt_tractor as mpp_tractornumber,oh.ord_hdrnumber,ev.evt_tractor,
 ev.evt_trailer1,ev.evt_dolly,ev.evt_trailer2, 
 (Case when ev.evt_eventcode = 'LUL' then 'CARGADO' else 'VACIO' end) as stp_status, 
 ev.evt_eventcode as stp_type,
