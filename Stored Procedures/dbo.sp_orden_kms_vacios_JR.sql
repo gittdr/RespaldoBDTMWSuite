@@ -28,9 +28,18 @@ DECLARE @TTOrdenes_cmp TABLE(
 BEGIN --1 Principal
 -- Inserta en la tabla temporal la información que haya en la de actividades...
 INSERT Into @TTOrdenes_cmp
-   Select  ord_hdrnumber,ord_status,ord_totalcharge
-	From	orderheader
-	Where ord_bookdate > '01-01-2022' and ord_status = 'CMP'
+Select  ord_hdrnumber,ord_status,ord_totalcharge
+	From	orderheader A
+	left join orden_kms_orden_Domo B
+	on A.ord_hdrnumber = B.orden
+	Where B.orden is null and 
+	A.ord_hdrnumber in (select ord_hdrnumber from orderheader where ord_bookdate > DATEADD(day, -1, GETDATE())  and ord_status = 'CMP')
+
+
+
+   --Select  ord_hdrnumber,ord_status,ord_totalcharge
+	--From	orderheader
+	--Where ord_bookdate > '01-01-2010' and ord_status = 'CMP'
 		-- Si hay movimientos en la tabla continua
 		If Exists ( Select count(*) From  @TTOrdenes_cmp )
 		BEGIN --2 Si hay ordenes
