@@ -20,7 +20,7 @@ BEGIN
 	EXEC msdb.dbo.sp_send_dbmail  
     @profile_name = 'smtp liverpool',  
     --@recipients = 'lbarron@convoy360.mx',  
-	@recipients = 'jcherrera@bgcapitalgroup.mx',  
+	@recipients = 'jcherrera@bgcapitalgroup.mx;operadocs@tdr.com.mx',  
     --@body = 'DX > 500 Alerta de creacion masiva de Ordenes!!!!!', 
 	@body = @bodyC ,
 	@file_attachments = @files,
