@@ -16,6 +16,7 @@ CREATE TABLE [dbo].[tts_bs_mc_detail]
 [EvidenciasFaltan] [int] NULL,
 [ReferenciasFaltan] [int] NULL,
 [NoCalc] [int] NULL,
-[Regresada] [int] NULL
+[Regresada] [int] NULL,
+[ord_EC] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO

@@ -15,6 +15,7 @@ CREATE TABLE [dbo].[tts_bs_mc]
 [mas5Monto] [float] NULL,
 [mas5Perc] [float] NULL,
 [mas5Lag] [int] NULL,
-[regresadasmas5] [int] NULL
+[regresadasmas5] [int] NULL,
+[ord_EC] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO

@@ -737,7 +737,7 @@ replace( (STUFF((
 	select 
 'CP2_MER_MER'                                                                                                                                                                  --1 Tipo de Registro
 																				+'|'+ 
-	replace(isnull(f.cmd_code,''),'|','')                                                                                                                                         --2 Consecutivo de la Mercancia
+	replace(isnull(f.fgt_sequence,''),'|','')                                                                                                                                         --2 Consecutivo de la Mercancia
 																				+'|'+
 	replace(isnull(f.cmd_code,''),'|','')                                                                                                                                         --3 Bienes Transportados  ---> catCartaPorte:c_ClaveProdServCP
 																		        +'|'+ 
@@ -806,7 +806,7 @@ replace( (STUFF((
 	select 
 	'CP2_MER_MER_CAN'                                                                                                                                                             --1 Tipo de Registro
 																				+'|'+ 
-	isnull(replace(f.cmd_code,'|',''),'')                                                                                                                                         --2 Consecutivo de la mercancia
+	isnull(replace(f.fgt_sequence,'|',''),'')                                                                                                                                         --2 Consecutivo de la mercancia
 																				+'|'+
 	casT(isnull(cast(f.fgt_count as int),'0')  as varchar(20))                                                                                                                    --3 Cantidad
 																		        +'|'+ 

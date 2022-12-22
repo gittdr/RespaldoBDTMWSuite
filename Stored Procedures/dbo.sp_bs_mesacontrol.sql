@@ -68,8 +68,8 @@ select
 		  0 as FaltanEvidencias,
 		  case when ord_refnum is null then 1 else 0 end  as FaltanReferencias,
 		  0 as Nocalc,
-		  case when ord_invoicestatus = 'AMC' then 1 else 0 end as regresada
-
+		  case when ord_invoicestatus = 'AMC' then 1 else 0 end as regresada,
+		  o.ord_revtype4 as ord_EC
 from orderheader o 
 where ord_status = 'CMP'  
 and o.ord_hdrnumber not in (select ord_hdrnumber from invoiceheader where ivh_invoicestatus  in ('XFR','NTP','RTP','PRN') )
@@ -116,8 +116,8 @@ select
 		  0 as FaltanEvidencias,
 		  case when ord_refnum is null then 1 else 0 end  as FaltanReferencias,
 		  0 as Nocalc,
-		  case when ord_invoicestatus = 'AMC' then 1 else 0 end as regresada
-
+		  case when ord_invoicestatus = 'AMC' then 1 else 0 end as regresada,
+		  o.ord_revtype4 as ord_EC
 from orderheader as O
 	where ord_invoicestatus  in ('PPD')  and ord_status in ( 'CMP') and O.ord_completiondate > '06-06-2022'
 	 and (SELECT count(OrderNumber) FROM AllPaperworkView as A  where A.OrderNumber = o.ord_hdrnumber and Required = 'Yes' and ReceivedMultiple like '%N%' ) > 0
@@ -164,8 +164,9 @@ avg(IndexLag) as lag,
 0,  --mas   5 Perc
 0,  --mas   5 Lag
 0   --mas   5 regresadas
+,ord_EC
 from tts_bs_mc_detail
-group by Proyecto,Operador,Cliente
+group by Proyecto,Operador,Cliente,ord_EC
 
 update tts_bs_mc
 
@@ -204,7 +205,8 @@ if (@modo = 'snap')
   mas5Lag,
   mas5Count,
   mas5Monto,
-  Monto
+  Monto,
+  ord_EC
   from tts_bs_mc
   
 

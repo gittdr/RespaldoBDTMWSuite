@@ -11,7 +11,7 @@ DECLARE @subjectC varchar(1000)
 DECLARE @files varchar(500)
 
 
-set @bodyC = @leg +  @mensaje;
+set @bodyC = @leg +' - '+  @mensaje;
 set @subjectC = @leg;
 set @files = @titulo;
 
