@@ -61,8 +61,8 @@ select ord_billto as Cliente,
 		 '' as [evidencias],
 		  case when ord_refnum is null then 1 else 0 end  as FaltanReferencias,
 		  0 as FaltanEvidencias,
-		  0 as Nocalc
-
+		  0 as Nocalc,
+		  o.ord_revtype4 as ord_EC
 from orderheader o 
 where ord_status = 'CMP'  
 
@@ -128,9 +128,10 @@ avg(BillLag) as lag,
 0,  --HLANum
 0,  --HLAMonto
 0,  --HLAPerc
-0  --HLaLag
+0,  --HLaLag
+ord_EC
 from tts_bs_invoice_detail
-group by cliente
+group by cliente, ord_EC
 
 update tts_bs_invoice 
 
@@ -182,10 +183,11 @@ if (@modo = 'snap')
   cliente,
   count(orden) as ordenes,
   30 as Lag,
-  sum(MontoFactura) as Monto
+  sum(MontoFactura) as Monto,
+  ord_EC
   from tts_bs_invoice_detail
   where billlag > 30
-  group by cliente
+  group by cliente,ord_EC
 
 
    /*

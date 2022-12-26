@@ -33,7 +33,7 @@ Select  ord_hdrnumber,ord_status,ord_totalcharge
 	left join orden_kms_orden_Domo B
 	on A.ord_hdrnumber = B.orden
 	Where B.orden is null and 
-	A.ord_hdrnumber in (select ord_hdrnumber from orderheader where ord_bookdate > DATEADD(day, -1, GETDATE())  and ord_status = 'CMP')
+	A.ord_hdrnumber in (select ord_hdrnumber from orderheader where ord_bookdate > DATEADD(day, -5, GETDATE())  and ord_status = 'CMP')
 
 
 

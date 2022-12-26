@@ -23,6 +23,7 @@ CREATE TABLE [dbo].[tts_bs_invoice]
 [HLACount] [int] NULL,
 [HLAMonto] [float] NULL,
 [HLAPerc] [float] NULL,
-[HLALag] [int] NULL
+[HLALag] [int] NULL,
+[ord_EC] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO

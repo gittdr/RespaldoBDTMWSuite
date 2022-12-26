@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[tts_bs_invoice_detail]
 [Evidencias] [varchar] (max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ReferenciasFaltan] [int] NULL,
 [EvidenciasFaltan] [int] NULL,
-[NoCalc] [int] NULL
+[NoCalc] [int] NULL,
+[ord_EC] [varchar] (6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
