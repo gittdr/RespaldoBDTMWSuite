@@ -23,7 +23,7 @@ IF(@ConjuntoDatos = 'GetOpe')
 BEGIN
 
 select top 1 mp.mpp_id,--mp.mpp_tractornumber
-ev.evt_tractor as mpp_tractornumber,oh.ord_hdrnumber, mpp_division as evt_tractor,
+ev.evt_tractor as mpp_tractornumber,oh.ord_hdrnumber, Replace(mpp_division,'-','') as evt_tractor,
 ev.evt_trailer1,ev.evt_dolly,ev.evt_trailer2, 
 (Case when ev.evt_eventcode = 'LUL' then 'CARGADO' else 'VACIO' end) as stp_status, 
 ev.evt_eventcode as stp_type,
@@ -40,5 +40,7 @@ END
 
 
 END
+
+
 
 GO
