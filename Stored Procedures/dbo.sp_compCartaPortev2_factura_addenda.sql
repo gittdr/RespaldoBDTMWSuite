@@ -22,7 +22,7 @@ Sentencia de prueba
 
 */
 
-CREATE proc [dbo].[sp_compCartaPortev2_factura]  @invoiceNumber varchar(20)
+CREATE proc [dbo].[sp_compCartaPortev2_factura_addenda]  @invoiceNumber varchar(20)
 
 as
 declare @lgh_hdrnumber varchar(20),
@@ -483,7 +483,7 @@ case (invoiceheader.ivh_custdoc) when 0	then
 																				+ '\n' +
 
 --SECCION ADDENDA
-    (CASE invoiceheader.ivh_billto WHEN 'COLGATEP' THEN 
+    (CASE invoiceheader.ivh_billto WHEN 'COLGATE' THEN 
 	'08'
 																					+'|'+
 	'ColgateVendor'
@@ -506,6 +506,7 @@ case (invoiceheader.ivh_custdoc) when 0	then
 	 + 
 
 	 --fin addenda
+
 
 ----SECCION CARTA PORTE GENERAL(1:1)
 

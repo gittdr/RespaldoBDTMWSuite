@@ -288,6 +288,36 @@ Select
    CAST(orderheader.ord_hdrnumber as varchar(20))											-- num de orden
 																				+'|'+
 																				+ '\n' +
+
+																				--SECCION ADDENDA
+    (CASE orderheader.ord_billto WHEN 'COLGATEP' THEN 
+	'08'
+																					+'|'+
+	'ColgateVendor'
+																					+'|'+
+	'MX0277'
+																					+ '\n' +
+	'08'
+																					+'|'+
+	'ColgateReference'		+
+																					+'|'+ 
+	isnull(REPLACE(LTRIM(RTRIM(orderheader.ord_refnum)),'|',''),'')	  --Referencia de addenda
+																					+ '\n' +
+	'08'
+																				      +'|'+ 
+	'ColgateDoc'
+																				        +'|'+ 
+	'SHP'															--DocType
+																					+ '\n' 
+	ELSE '' END)
+	 + 
+
+	 --fin addenda
+
+
+
+
+
 																				
 ----SECCION CARTA PORTE GENERAL(1:1)
 
@@ -637,21 +667,21 @@ replace( (STUFF((
 
 */
 
---SECCION ADDENDA
-+
-    (CASE orderheader.ord_billto WHEN 'COLGATEP' THEN 
+----SECCION ADDENDA
+--+
+--    (CASE orderheader.ord_billto WHEN 'COLGATEP' THEN 
 
-	+
-	'Addenda'		+
-						+'|'+ 
-	'MX0277'						-- Num de vendor
-								      +'|'+ 
-	isnull(REPLACE(LTRIM(RTRIM(orderheader.ord_refnum)),'|',''),'')	  --Referencia de addenda
-									        +'|'+ 
-	'SHP'							--DocType
-									+'|'
-	ELSE '' END)
-	 + '\n' +
+--	+
+--	'Addenda'		+
+--						+'|'+ 
+--	'MX0277'						-- Num de vendor
+--								      +'|'+ 
+--	isnull(REPLACE(LTRIM(RTRIM(orderheader.ord_refnum)),'|',''),'')	  --Referencia de addenda
+--									        +'|'+ 
+--	'SHP'							--DocType
+--									+'|'
+--	ELSE '' END)
+--	 + '\n' +
 --SECCION AUTOTRANSPORTE FEDERAL (1:1)
 																			 +   
     'CP2_AUT'                                                                  --1 Tipo de Registro

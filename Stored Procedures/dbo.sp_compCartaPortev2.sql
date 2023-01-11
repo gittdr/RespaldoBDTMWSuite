@@ -288,6 +288,31 @@ Select
    CAST(orderheader.ord_hdrnumber as varchar(20))											-- num de orden
 																				+'|'+
 																				+ '\n' +
+--SECCION ADDENDA
+    (CASE orderheader.ord_billto WHEN 'COLGATEP' THEN 
+	'08'
+																					+'|'+
+	'ColgateVendor'
+																					+'|'+
+	'MX0277'
+																					+ '\n' +
+	'08'
+																					+'|'+
+	'ColgateReference'		+
+																					+'|'+ 
+	isnull(REPLACE(LTRIM(RTRIM(orderheader.ord_refnum)),'|',''),'')	  --Referencia de addenda
+																					+ '\n' +
+	'08'
+																				      +'|'+ 
+	'ColgateDoc'
+																				        +'|'+ 
+	'SHP'															--DocType
+																					+ '\n' 
+	ELSE '' END)
+	 + 
+
+	 --fin addenda
+
 																				
 ----SECCION CARTA PORTE GENERAL(1:1)
 
